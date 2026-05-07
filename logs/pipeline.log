@@ -1,0 +1,259 @@
+ Dataset cargado: 48,895 filas, 16 columnas
+ -> load_raw_data finalizado (0.24s)
+ -> handle_missing_values finalizado (0.02s)
+ -> apply_log_transform finalizado (0.02s)
+ Target Encoding aplicado a: ['neighbourhood']
+ One-Hot Encoding aplicado a: ['neighbourhood_group', 'room_type']
+ -> encode_categorical_hybrid finalizado (0.06s)
+ -> scale_features finalizado (0.05s)
+ -> apply_pca_with_report finalizado (0.23s)
+ -> complete_feature_engineering finalizado (0.43s)
+ Dataset cargado: 48,895 filas, 16 columnas
+ -> load_raw_data finalizado (0.15s)
+ -> handle_missing_values finalizado (0.01s)
+ -> apply_log_transform finalizado (0.01s)
+ Target Encoding aplicado a: ['neighbourhood']
+ One-Hot Encoding aplicado a: ['neighbourhood_group', 'room_type']
+ -> encode_categorical_hybrid finalizado (0.04s)
+ -> scale_features finalizado (0.04s)
+ -> apply_pca_with_report finalizado (0.19s)
+ -> complete_feature_engineering finalizado (0.33s)
+ -> validate_kmeans_strategy finalizado (217.00s)
+ -> train_final_kmeans finalizado (0.25s)
+ Dataset cargado: 48,895 filas, 16 columnas
+ -> load_raw_data finalizado (0.14s)
+ -> create_domain_features finalizado (0.01s)
+ Target Encoding aplicado a: ['neighbourhood']
+ One-Hot Encoding aplicado a: ['neighbourhood_group', 'room_type']
+ -> encode_categorical_hybrid finalizado (0.04s)
+ -> scale_features finalizado (0.04s)
+ -> apply_pca_with_report finalizado (0.23s)
+ -> complete_feature_engineering finalizado (0.37s)
+ -> validate_kmeans_strategy finalizado (221.91s)
+ -> train_final_kmeans finalizado (0.27s)
+ [ERROR] train_and_select_best_model falló: 
+All the 3 fits failed.
+It is very likely that your model is misconfigured.
+You can try to debug the error by setting error_score='raise'.
+
+Below are more details about the failures:
+--------------------------------------------------------------------------------
+3 fits failed with the following error:
+Traceback (most recent call last):
+  File "C:\Users\ergio\Lib\site-packages\sklearn\model_selection\_validation.py", line 833, in _fit_and_score
+    estimator.fit(X_train, y_train, **fit_params)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ergio\Lib\site-packages\xgboost\core.py", line 751, in inner_f
+    return func(**kwargs)
+  File "C:\Users\ergio\Lib\site-packages\xgboost\sklearn.py", line 1368, in fit
+    self._Booster = train(
+                    ~~~~~^
+        params,
+        ^^^^^^^
+    ...<9 lines>...
+        callbacks=self.callbacks,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ergio\Lib\site-packages\xgboost\core.py", line 751, in inner_f
+    return func(**kwargs)
+  File "C:\Users\ergio\Lib\site-packages\xgboost\training.py", line 201, in train
+    if cb_container.after_iteration(bst, i, dtrain, evals):
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ergio\Lib\site-packages\xgboost\callback.py", line 268, in after_iteration
+    ret = any(c.after_iteration(model, epoch, self.history) for c in self.callbacks)
+  File "C:\Users\ergio\Lib\site-packages\xgboost\callback.py", line 268, in <genexpr>
+    ret = any(c.after_iteration(model, epoch, self.history) for c in self.callbacks)
+              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ergio\Lib\site-packages\xgboost\callback.py", line 460, in after_iteration
+    raise ValueError(msg)
+ValueError: Must have at least 1 validation dataset for early stopping.
+
+ [ERROR] main falló: 
+All the 3 fits failed.
+It is very likely that your model is misconfigured.
+You can try to debug the error by setting error_score='raise'.
+
+Below are more details about the failures:
+--------------------------------------------------------------------------------
+3 fits failed with the following error:
+Traceback (most recent call last):
+  File "C:\Users\ergio\Lib\site-packages\sklearn\model_selection\_validation.py", line 833, in _fit_and_score
+    estimator.fit(X_train, y_train, **fit_params)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ergio\Lib\site-packages\xgboost\core.py", line 751, in inner_f
+    return func(**kwargs)
+  File "C:\Users\ergio\Lib\site-packages\xgboost\sklearn.py", line 1368, in fit
+    self._Booster = train(
+                    ~~~~~^
+        params,
+        ^^^^^^^
+    ...<9 lines>...
+        callbacks=self.callbacks,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\ergio\Lib\site-packages\xgboost\core.py", line 751, in inner_f
+    return func(**kwargs)
+  File "C:\Users\ergio\Lib\site-packages\xgboost\training.py", line 201, in train
+    if cb_container.after_iteration(bst, i, dtrain, evals):
+       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ergio\Lib\site-packages\xgboost\callback.py", line 268, in after_iteration
+    ret = any(c.after_iteration(model, epoch, self.history) for c in self.callbacks)
+  File "C:\Users\ergio\Lib\site-packages\xgboost\callback.py", line 268, in <genexpr>
+    ret = any(c.after_iteration(model, epoch, self.history) for c in self.callbacks)
+              ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ergio\Lib\site-packages\xgboost\callback.py", line 460, in after_iteration
+    raise ValueError(msg)
+ValueError: Must have at least 1 validation dataset for early stopping.
+
+ Dataset cargado: 48,895 filas, 16 columnas
+ -> load_raw_data finalizado (0.15s)
+ -> create_domain_features finalizado (0.05s)
+ -> handle_missing_values finalizado (0.04s)
+ -> apply_log_transform finalizado (0.05s)
+ Target Encoding aplicado a: ['neighbourhood']
+ One-Hot Encoding aplicado a: ['neighbourhood_group', 'room_type']
+ -> encode_categorical_hybrid finalizado (0.18s)
+ -> scale_features finalizado (0.15s)
+ -> apply_pca_with_report finalizado (1.35s)
+ -> complete_feature_engineering finalizado (1.99s)
+ -> validate_kmeans_strategy finalizado (236.74s)
+ -> train_final_kmeans finalizado (0.27s)
+ -> train_and_select_best_model finalizado (58.65s)
+ -> main finalizado (333.50s)
+ Dataset cargado: 48,895 filas, 16 columnas
+ -> load_raw_data finalizado (0.12s)
+ Target Encoding aplicado a: ['neighbourhood']
+ One-Hot Encoding aplicado a: ['neighbourhood_group', 'room_type']
+ -> encode_categorical_hybrid finalizado (0.03s)
+ -> scale_features finalizado (0.03s)
+ -> apply_pca_with_report finalizado (0.25s)
+ -> complete_feature_engineering finalizado (0.35s)
+ -> validate_kmeans_strategy finalizado (172.02s)
+ -> train_final_kmeans finalizado (0.21s)
+ -> train_and_select_best_model finalizado (38.77s)
+ -> main finalizado (216.07s)
+ Dataset cargado: 48,895 filas, 16 columnas
+ -> load_raw_data finalizado (0.16s)
+ -> handle_missing_values finalizado (0.01s)
+ -> apply_log_transform finalizado (0.01s)
+ Target Encoding aplicado a: ['neighbourhood']
+ One-Hot Encoding aplicado a: ['neighbourhood_group', 'room_type']
+ -> encode_categorical_hybrid finalizado (0.05s)
+ -> scale_features finalizado (0.04s)
+ -> apply_pca_with_report finalizado (0.45s)
+ -> complete_feature_engineering finalizado (0.65s)
+ -> validate_kmeans_strategy finalizado (217.79s)
+ -> train_final_kmeans finalizado (0.23s)
+ -> train_and_select_best_model finalizado (554.22s)
+ -> main finalizado (790.32s)
+ Dataset cargado: 48,895 filas, 16 columnas
+ -> load_raw_data finalizado (0.14s)
+ Target Encoding aplicado a: ['neighbourhood']
+ One-Hot Encoding aplicado a: ['neighbourhood_group', 'room_type']
+ -> encode_categorical_hybrid finalizado (0.04s)
+ -> scale_features finalizado (0.04s)
+ -> apply_pca_with_report finalizado (0.35s)
+ -> complete_feature_engineering finalizado (0.48s)
+ -> validate_kmeans_strategy finalizado (216.67s)
+ -> train_final_kmeans finalizado (0.25s)
+ -> train_and_select_best_model finalizado (524.39s)
+ -> main finalizado (748.84s)
+ Dataset cargado: 48,895 filas, 16 columnas
+ -> load_raw_data finalizado (0.14s)
+ -> handle_missing_values finalizado (0.01s)
+ -> apply_log_transform finalizado (0.01s)
+ Target Encoding aplicado a: ['neighbourhood']
+ One-Hot Encoding aplicado a: ['neighbourhood_group', 'room_type']
+ -> encode_categorical_hybrid finalizado (0.05s)
+ -> scale_features finalizado (0.04s)
+ -> apply_pca_with_report finalizado (0.36s)
+ -> complete_feature_engineering finalizado (0.52s)
+ -> validate_kmeans_strategy finalizado (315.06s)
+ -> train_final_kmeans finalizado (0.32s)
+ -> train_and_select_best_model finalizado (1171.34s)
+ -> main finalizado (1513.71s)
+ Dataset cargado: 48,895 filas, 16 columnas
+ -> load_raw_data finalizado (0.18s)
+ Dataset cargado: 48,895 filas, 16 columnas
+ -> load_raw_data finalizado (0.11s)
+ Target Encoding aplicado a: ['neighbourhood']
+ One-Hot Encoding aplicado a: ['neighbourhood_group', 'room_type']
+ -> encode_categorical_hybrid finalizado (0.03s)
+ -> scale_features finalizado (0.03s)
+ -> apply_pca_with_report finalizado (0.25s)
+ -> complete_feature_engineering finalizado (0.35s)
+ -> validate_kmeans_strategy finalizado (204.01s)
+ -> train_final_kmeans finalizado (0.19s)
+ -> train_and_select_best_model finalizado (383.85s)
+ -> main finalizado (593.66s)
+ Dataset cargado: 48,895 filas, 16 columnas
+ -> load_raw_data finalizado (0.17s)
+ -> create_domain_features finalizado (0.01s)
+ -> handle_missing_values finalizado (0.01s)
+ Target Encoding aplicado a: ['neighbourhood']
+ One-Hot Encoding aplicado a: ['neighbourhood_group', 'room_type']
+ -> encode_categorical_hybrid finalizado (0.05s)
+ -> scale_features finalizado (0.04s)
+ -> apply_pca_with_report finalizado (0.42s)
+ -> complete_feature_engineering finalizado (0.63s)
+ -> validate_kmeans_strategy finalizado (319.33s)
+ -> train_final_kmeans finalizado (1.39s)
+ Dataset cargado: 48,895 filas, 16 columnas
+ -> load_raw_data finalizado (0.14s)
+ -> create_domain_features finalizado (0.02s)
+ -> handle_missing_values finalizado (0.01s)
+ -> apply_log_transform finalizado (0.01s)
+ Target Encoding aplicado a: ['neighbourhood']
+ One-Hot Encoding aplicado a: ['neighbourhood_group', 'room_type']
+ -> encode_categorical_hybrid finalizado (0.04s)
+ -> scale_features finalizado (0.04s)
+ -> apply_pca_with_report finalizado (1.96s)
+ -> complete_feature_engineering finalizado (2.19s)
+ -> validate_kmeans_strategy finalizado (298.71s)
+ -> train_final_kmeans finalizado (0.34s)
+ -> train_and_select_best_model finalizado (1229.12s)
+ -> main finalizado (1559.35s)
+ -> train_and_select_best_model finalizado (564.86s)
+ -> main finalizado (873.65s)
+ Dataset cargado: 48,895 filas, 16 columnas
+ -> load_raw_data finalizado (0.15s)
+ Target Encoding aplicado a: ['neighbourhood']
+ One-Hot Encoding aplicado a: ['neighbourhood_group', 'room_type']
+ -> encode_categorical_hybrid finalizado (0.04s)
+ -> scale_features finalizado (0.04s)
+ -> apply_pca_with_report finalizado (0.37s)
+ -> complete_feature_engineering finalizado (0.52s)
+ -> validate_kmeans_strategy finalizado (214.79s)
+ -> train_final_kmeans finalizado (0.39s)
+ -> train_and_select_best_model finalizado (538.88s)
+ -> main finalizado (762.83s)
+ Dataset cargado: 48,895 filas, 16 columnas
+ -> load_raw_data finalizado (0.15s)
+ -> create_domain_features finalizado (0.01s)
+ -> handle_missing_values finalizado (0.01s)
+ Target Encoding aplicado a: ['neighbourhood']
+ One-Hot Encoding aplicado a: ['neighbourhood_group', 'room_type']
+ -> encode_categorical_hybrid finalizado (0.04s)
+ -> scale_features finalizado (0.04s)
+ -> apply_pca_with_report finalizado (0.35s)
+ -> complete_feature_engineering finalizado (0.51s)
+ -> validate_kmeans_strategy finalizado (215.55s)
+ -> train_final_kmeans finalizado (0.40s)
+ -> train_and_select_best_model finalizado (535.42s)
+ -> main finalizado (759.48s)
+ Dataset cargado: 48,895 filas, 16 columnas
+ -> load_raw_data finalizado (0.15s)
+ -> handle_missing_values finalizado (0.01s)
+ -> apply_log_transform finalizado (0.01s)
+ Target Encoding aplicado a: ['neighbourhood']
+ One-Hot Encoding aplicado a: ['neighbourhood_group', 'room_type']
+ -> encode_categorical_hybrid finalizado (0.05s)
+ -> scale_features finalizado (0.04s)
+ -> apply_pca_with_report finalizado (0.35s)
+ -> complete_feature_engineering finalizado (0.50s)
+ -> validate_kmeans_strategy finalizado (212.24s)
+ -> train_final_kmeans finalizado (0.39s)
+ -> train_and_select_best_model finalizado (566.38s)
+ -> main finalizado (786.86s)

@@ -1,0 +1,55 @@
+[project]
+name = "airbnb_analysis"
+version = "0.0.2"
+description = "Pipeline for Airbnb data analysis, feature engineering, and PCA."
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{ name = "Sergio Minguez Cruces"}]
+
+dependencies = [
+    "pandas>=2.0",
+    "numpy>=1.24",
+    "scikit-learn>=1.2",
+    "matplotlib>=3.7",
+    "seaborn>=0.12",
+    "plotly>=5.15",
+    "scipy>=1.10",
+    "xgboost>=1.7",
+    "pygam>=0.9",
+    "streamlit>=1.24",
+    "statsmodels>=0.14",
+    "folium>=0.14",
+    "streamlit-folium>=0.13",
+    "joblib",
+]
+
+[project.scripts]
+airbnb-pipeline = "main:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "ruff>=0.1",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

@@ -1,0 +1,33 @@
+\chapter{Ingeniería de Variables e Inteligencia Espacial}
+
+\section{Creación de Features Espaciales (Haversine)}
+La ubicación cruda definida por latitud y longitud, si bien provee un marco de referencia absoluto, carece de semántica de negocio si no se interrelaciona con los puntos neurálgicos de la demanda turística de Nueva York. 
+
+Para dotar de inteligencia espacial al modelo, se instrumentó el cálculo matemático de distancias en superficie esférica utilizando la fórmula del semiverseno (Haversine). Se proyectó la distancia en kilómetros desde cada propiedad hacia tres focos principales de actividad económica y turística:
+\begin{enumerate}
+    \item \textbf{Times Square} (Centro de la actividad turística y comercial).
+    \item \textbf{Central Park} (Atracción paisajística primaria).
+    \item \textbf{Grand Central Terminal} (Eje de interconexión logística del transporte).
+\end{enumerate}
+
+Esta ingeniería transformó las coordenadas geográficas estáticas en métricas dinámicas de centralidad, convirtiéndose subsecuentemente en uno de los ejes de mayor \textit{feature importance} global.
+
+\section{Codificación Híbrida de Variables Categóricas}
+Los modelos matemáticos (especialmente los basados en cálculo de distancias como SVM y Regresión Lineal) no asimilan características textuales. La naturaleza de los datos categóricos dictó una estrategia de codificación híbrida:
+\begin{itemize}
+    \item \textbf{One-Hot Encoding (OHE):} Aplicado a variables con baja cardinalidad como \texttt{neighbourhood\_group} (5 valores) y \texttt{room\_type} (3 valores), evitando la introducción de una jerarquía artificial inexistente.
+    \item \textbf{Target Encoding:} Aplicado al vector \texttt{neighbourhood} (más de 220 valores nominales), sustituyendo el nombre del vecindario por el precio logarítmico medio del mismo. Esto colapsó la altísima dimensionalidad sin mermar la varianza y reteniendo su peso explicativo.
+\end{itemize}
+
+\section{Reducción de Dimensionalidad: Análisis de Componentes Principales (PCA)}
+La expansión del dataset mediante el \textit{Target Encoding} y las distancias espaciales, junto a las variables temporales preexistentes, incrementó sustancialmente el riesgo de multicolinealidad estructural (por ejemplo, la alta dependencia entre \texttt{availability\_365} y métricas temporales de reservas).
+
+Para destilar la señal del ruido, se aplicó el Análisis de Componentes Principales (PCA). PCA encuentra una transformación lineal ortogonal del espacio de características originales hacia un nuevo sistema de coordenadas donde la varianza se maximiza iterativamente.
+
+La ecuación de proyección a un nuevo componente principal $z_k$ a partir del vector estandarizado $x$ es:
+\begin{equation}
+z_k = \mathbf{w}_k^T \mathbf{x}
+\end{equation}
+Sujeto a la restricción ortogonal $||\mathbf{w}_k|| = 1$.
+
+En nuestra implementación, conservamos un umbral de hiperparámetro fijado empíricamente en el 95\% de varianza explicada. Este abordaje permitió eliminar componentes residuales redundantes, acelerando el tiempo de convergencia (\textit{training time}) de modelos complejos como *Support Vector Machines* en la fase predictiva y estableciendo un espacio isotrópico ideal para el *Clustering*.

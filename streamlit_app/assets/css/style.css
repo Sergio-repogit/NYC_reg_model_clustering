@@ -1,0 +1,380 @@
+/* 
+streamlit_app/assets/style.css
+==============================
+
+Estilos personalizados para la aplicación Streamlit
+Tema Airbnb con colores corporativos
+*/
+
+:root {
+    --primary-color: #FF5A5F;
+    --secondary-color: #00A699;
+    --tertiary-color: #FC642D;
+    --dark-text: #484848;
+    --light-bg: #F7F7F7;
+    --white: #FFFFFF;
+    --border-color: #E0E0E0;
+}
+
+/* ============================================================================
+   TIPOGRAFÍA Y ESTILOS GENERALES
+   ============================================================================ */
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    color: var(--dark-text);
+    background-color: var(--white);
+}
+
+/* Títulos */
+h1 {
+    color: var(--primary-color);
+    font-weight: 600;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+}
+
+h2 {
+    color: var(--dark-text);
+    font-weight: 600;
+    margin-top: 25px;
+}
+
+h3 {
+    color: var(--secondary-color);
+    font-weight: 500;
+}
+
+/* ============================================================================
+   SIDEBAR
+   ============================================================================ */
+
+[data-testid="stSidebar"] {
+    background-color: var(--light-bg);
+    border-right: 1px solid var(--border-color);
+}
+
+[data-testid="stSidebar"] h2 {
+    color: var(--primary-color);
+    font-size: 18px;
+}
+
+[data-testid="stSidebar"] .stRadio > label,
+[data-testid="stSidebar"] .stCheckbox > label {
+    color: var(--dark-text);
+    font-weight: 500;
+}
+
+/* ============================================================================
+   BOTONES
+   ============================================================================ */
+
+.stButton > button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.stButton > button:hover {
+    background-color: #E04851;
+    box-shadow: 0 4px 12px rgba(255, 90, 95, 0.3);
+}
+
+.stButton > button:active {
+    background-color: #C93C40;
+}
+
+/* ============================================================================
+   SELECTORES Y INPUTS
+   ============================================================================ */
+
+.stSelectbox > div > div,
+.stMultiSelect > div > div,
+.stSlider > div > div > div,
+.stNumberInput > div > div > input {
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+.stSelectbox > div > div:focus,
+.stMultiSelect > div > div:focus,
+.stNumberInput > div > div > input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(255, 90, 95, 0.1);
+}
+
+/* ============================================================================
+   MÉTRICAS Y CARDS
+   ============================================================================ */
+
+[data-testid="metric-container"] {
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+[data-testid="metric-container"]:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-color);
+}
+
+.metric-card {
+    background: linear-gradient(135deg, rgba(255, 90, 95, 0.1) 0%, rgba(0, 166, 153, 0.1) 100%);
+    border-left: 4px solid var(--primary-color);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* ============================================================================
+   TABS
+   ============================================================================ */
+
+[data-baseweb="tab-list"] button {
+    color: var(--dark-text);
+    font-weight: 500;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+[data-baseweb="tab-list"] button:hover {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+[data-baseweb="tab-list"] button[aria-selected="true"] {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+/* ============================================================================
+   DATAFRAMES Y TABLAS
+   ============================================================================ */
+
+.stDataFrame {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.stDataFrame tbody tr:hover {
+    background-color: rgba(255, 90, 95, 0.05);
+}
+
+/* ============================================================================
+   ALERTAS Y MENSAJES
+   ============================================================================ */
+
+.stAlert {
+    border-radius: 8px;
+    border-left: 4px solid;
+}
+
+.stSuccess {
+    border-left-color: var(--secondary-color);
+    background-color: rgba(0, 166, 153, 0.1);
+}
+
+.stWarning {
+    border-left-color: #FFB400;
+    background-color: rgba(255, 180, 0, 0.1);
+}
+
+.stError {
+    border-left-color: #FF4B4B;
+    background-color: rgba(255, 75, 75, 0.1);
+}
+
+.stInfo {
+    border-left-color: var(--primary-color);
+    background-color: rgba(255, 90, 95, 0.1);
+}
+
+/* ============================================================================
+   EXPANSORES Y COLAPSABLES
+   ============================================================================ */
+
+.streamlit-expanderHeader {
+    background-color: var(--light-bg);
+    border-radius: 6px;
+    padding: 10px;
+    font-weight: 600;
+    color: var(--dark-text);
+}
+
+.streamlit-expanderHeader:hover {
+    background-color: rgba(255, 90, 95, 0.1);
+}
+
+/* ============================================================================
+   GRÁFICOS PLOTLY
+   ============================================================================ */
+
+.plotly-graph-div {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px;
+    background-color: var(--white);
+}
+
+/* ============================================================================
+   MAPAS (PYDECK)
+   ============================================================================ */
+
+[data-testid="stDeckGlJsonChart"] {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* ============================================================================
+   FOOTER Y DIVIDERS
+   ============================================================================ */
+
+hr {
+    border: none;
+    border-top: 2px solid var(--border-color);
+    margin: 20px 0;
+}
+
+/* ============================================================================
+   ELEMENTOS ESPECIALES PARA AIRBNB
+   ============================================================================ */
+
+.airbnb-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.airbnb-header h1 {
+    color: white;
+    border: none;
+    margin: 0;
+}
+
+.feature-card {
+    background: linear-gradient(135deg, rgba(255, 90, 95, 0.05) 0%, rgba(0, 166, 153, 0.05) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(255, 90, 95, 0.2);
+}
+
+.stat-box {
+    background-color: var(--light-bg);
+    border-left: 4px solid var(--primary-color);
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+}
+
+.stat-box-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.stat-box-label {
+    font-size: 12px;
+    color: #999;
+    margin-top: 5px;
+}
+
+/* ============================================================================
+   RESPONSIVE Y MEDIA QUERIES
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 24px;
+    }
+    
+    h2 {
+        font-size: 18px;
+    }
+    
+    .stButton > button {
+        width: 100%;
+    }
+    
+    [data-testid="metric-container"] {
+        padding: 15px;
+    }
+}
+
+/* ============================================================================
+   ANIMACIONES
+   ============================================================================ */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.metric-card {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* ============================================================================
+   UTILIDADES
+   ============================================================================ */
+
+.text-center {
+    text-align: center;
+}
+
+.text-muted {
+    color: #999;
+}
+
+.text-success {
+    color: var(--secondary-color);
+}
+
+.text-danger {
+    color: #FF4B4B;
+}
+
+.text-warning {
+    color: #FFB400;
+}
+
+.text-info {
+    color: var(--primary-color);
+}
+
+.mt-5 {
+    margin-top: 50px;
+}
+
+.mb-5 {
+    margin-bottom: 50px;
+}
+
+.p-3 {
+    padding: 20px;
+}

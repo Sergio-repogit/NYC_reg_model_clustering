@@ -1,0 +1,34 @@
+[theme]
+# Colores principales (tema Airbnb)
+primaryColor = "#FF5A5F"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F7F7F7"
+textColor = "#484848"
+font = "sans serif"
+
+# Configuración de fuentes
+[client]
+showErrorDetails = true
+toolbarMode = "minimal"
+
+[logger]
+level = "info"
+
+[client.toolbarMode]
+value = "minimal"
+
+[server]
+# Configuración del servidor
+maxUploadSize = 200
+enableXsrfProtection = true
+enableCORS = false
+headless = true
+port = 8501
+
+# Configuración de ejecución
+runOnSave = true
+runOnSaveDeprecationWarning = false
+
+[browser]
+gatherUsageStats = false
+serverAddress = "localhost"

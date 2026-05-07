@@ -1,0 +1,100 @@
+\documentclass[11pt,a4paper,twoside]{report}
+
+% Paquetes esenciales
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage[left=2.5cm,right=2.5cm,top=3cm,bottom=3cm]{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{listings}
+\usepackage{natbib}
+
+% Configuración de colores
+\definecolor{nycred}{RGB}{255,90,95} % Color brand Airbnb
+\definecolor{codegray}{rgb}{0.95,0.95,0.95}
+\definecolor{codeblue}{rgb}{0.1,0.2,0.8}
+
+% Configuración de listados de código
+\lstset{
+    backgroundcolor=\color{codegray},
+    commentstyle=\color{gray},
+    keywordstyle=\color{codeblue}\bfseries,
+    numberstyle=\tiny\color{gray},
+    stringstyle=\color{nycred},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+
+% Configuración de cabeceras y pies de página
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[RE]{\leftmark}
+\fancyhead[LO]{\rightmark}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Título y Autor
+\title{
+    \vspace{-2cm}
+    \includegraphics[width=0.4\textwidth]{../../streamlit_app/assets/images/logo.png}\\[1cm]
+    \Huge \textbf{Predicción y Segmentación Dinámica del Mercado Inmobiliario en NYC}\\[0.5cm]
+    \Large Informe Técnico Completo del Proyecto de Machine Learning
+}
+\author{
+    \textbf{Autor:} Sergio Minguez Cruces\\
+    \textbf{Institución:} UNIE Universidad\\
+    \textbf{Grado:} Matemáticas\\
+    \textbf{Asignatura:} Minería de Datos
+}
+\date{14 de Mayo de 2026}
+
+\begin{document}
+
+% Portada
+\maketitle
+
+% Resumen Ejecutivo
+\begin{abstract}
+Este informe detalla el diseño, implementación y evaluación de un pipeline de \textit{Machine Learning} end-to-end sobre el ecosistema de alquileres de Airbnb en la ciudad de Nueva York (2019). El proyecto consolida un análisis exhaustivo de casi 50,000 propiedades, abordando problemas de asimetría de datos, valores faltantes condicionales (MAR) y multicolinealidad. Mediante ingeniería de variables avanzadas (distancias geoespaciales), técnicas de reducción de dimensionalidad (PCA), y un ecosistema de modelización supervisada robusto (ensembles y SVM), se logró un modelo altamente generalizable ($R^2 \approx 59\%$) para la predicción de precios. De manera complementaria, el aprendizaje no supervisado (K-Means) ha permitido segmentar la oferta en nichos de mercado claramente definidos. Todo el sistema está orquestado con una adherencia estricta a principios de reproducibilidad y culmina en el despliegue de una herramienta interactiva.
+\end{abstract}
+
+% Índices
+\tableofcontents
+\listoffigures
+\listoftables
+
+\clearpage
+
+% Inclusión de capítulos
+\include{capitulos/01_introduccion}
+\include{capitulos/02_eda}
+\include{capitulos/03_feature_engineering}
+\include{capitulos/04_clustering}
+\include{capitulos/05_modelado}
+\include{capitulos/06_despliegue}
+\include{capitulos/07_conclusiones}
+
+% Bibliografía
+\bibliographystyle{apalike}
+\bibliography{referencias}
+
+\end{document}

@@ -1,0 +1,14 @@
+\chapter{Despliegue e Interfaz Interactiva}
+
+\section{Arquitectura de Producción (Streamlit)}
+La finalidad de cualquier ecosistema analítico aplicado es su transferencia al dominio humano mediante una interfaz interpretable. El modelo \textbf{SVR\_RBF} ganador, la proyección topológica PCA, la matriz de escalado StandardScaler y el propio modelado de segmentación (K-Means) fueron encapsulados matemáticamente y exportados a disco (\textit{Pickle Serialization}).
+
+Este esquema actúa como motor \textit{backend} para una interfaz de usuario completamente dinámica construida bajo la arquitectura Streamlit. La aplicación elimina la necesidad de que los \textit{stakeholders} interactúen vía terminal, ofreciendo en una arquitectura web una experiencia integral unificada, desde tableros de diagnóstico y representaciones biplot del PCA, hasta un simulador \textit{real-time}.
+
+\section{El Simulador de Precios}
+El pilar de despliegue principal es la interfaz de inferencia interactiva. Se dotó de una arquitectura isomórfica que garantiza la consistencia del vector analítico: la información digitada por el usuario (Barrio, Tipo de habitación, Disponibilidad, etc.) cruza una réplica exacta del pipeline subyacente. 
+Esto incluye el cálculo algebraico \textit{on-the-fly} de las distancias Haversine (empleando matrices NumPy para minimizar latencia), su escalado y posterior proyección dimensional en PCA previo a ser transferido a la unidad SVR para su evaluación.
+
+\section{Cartografía Geográfica Integrada (Folium)}
+Para fortalecer el carácter holístico y la usabilidad (UX) del simulador, el ingreso numérico por coordenadas fue sustituido por una selección visual a través de mapas interactivos utilizando \textit{Folium}. 
+El sistema superpone máscaras logísticas sobre el área del barrio (Neighbourhood) validando los \textit{inputs} del usuario antes de integrarlos al ciclo predictivo. Así, no sólo se retorna una recomendación de la rentabilidad (Predicción del Precio por Noche) sino que, paralelamente, el \textit{endpoint} indica automáticamente al grupo segmentado (\textit{Cluster}) al cual la propiedad analizada pertenecería bajo la perspectiva no supervisada.
