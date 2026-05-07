@@ -6,7 +6,6 @@ Módulo con modelos no paramétricos y de alta flexibilidad: Splines, GAM, SVM y
 Optimizado exclusivamente para tareas de regresión de precios.
 """
 
-
 import pandas as pd
 from pygam import LinearGAM, s
 from sklearn.linear_model import LinearRegression
@@ -23,6 +22,7 @@ logger = setup_logging(__name__)
 # GAM (GENERALIZED ADDITIVE MODELS) CON SPLINES
 # ============================================================================
 
+
 @timer
 def train_gam(X_train: pd.DataFrame, y_train: pd.Series, n_splines: int = 25):
     """
@@ -36,15 +36,19 @@ def train_gam(X_train: pd.DataFrame, y_train: pd.Series, n_splines: int = 25):
     model = LinearGAM(terms)
     model.fit(X_train, y_train)
 
-    logger.info(f" GAM (Splines) entrenado. Pseudo-R2: {model.statistics_['pseudo_r2']['explained_deviance']:.4f}")
+    logger.info(
+        f" GAM (Splines) entrenado. Pseudo-R2: {model.statistics_['pseudo_r2']['explained_deviance']:.4f}"
+    )
     return model
+
 
 # ============================================================================
 # SUPPORT VECTOR REGRESSION (SVR)
 # ============================================================================
 
+
 @timer
-def train_svr(X_train, y_train, kernel='rbf', C=1.0, epsilon=0.1):
+def train_svr(X_train, y_train, kernel="rbf", C=1.0, epsilon=0.1):
     """
     Entrena SVR con escalado interno mandatorio.
     """
@@ -58,9 +62,11 @@ def train_svr(X_train, y_train, kernel='rbf', C=1.0, epsilon=0.1):
     logger.info(f" SVR ({kernel}) entrenado. R2: {model.score(X_scaled, y_train):.4f}")
     return model
 
+
 # ============================================================================
 # K-NEAREST NEIGHBORS (KNN REGRESSOR)
 # ============================================================================
+
 
 @timer
 def train_knn_regressor(X_train, y_train, n_neighbors=5):
@@ -77,34 +83,37 @@ def train_knn_regressor(X_train, y_train, n_neighbors=5):
     logger.info(f" KNN Regressor entrenado (k={n_neighbors})")
     return model
 
+
 # ============================================================================
 # REGRESIÓN POLINOMIAL (PIPELINE)
 # ============================================================================
+
 
 @timer
 def train_polynomial_regression(X_train, y_train, degree=2):
     """
     Pipeline de regresión polinomial.
     """
-    model = Pipeline([
-        ('poly', PolynomialFeatures(degree=degree)),
-        ('linear', LinearRegression())
-    ])
+    model = Pipeline(
+        [("poly", PolynomialFeatures(degree=degree)), ("linear", LinearRegression())]
+    )
     model.fit(X_train, y_train)
 
     logger.info(f" Regresión Polinomial (grado={degree}) entrenada")
     return model
 
+
 # ============================================================================
 # ORQUESTACIÓN
 # ============================================================================
+
 
 @timer
 def train_all_flexible_models(X_train, y_train) -> dict:
     """Entrena la suite completa de modelos flexibles."""
     return {
-        'GAM': train_gam(X_train, y_train),
-        'SVR': train_svr(X_train, y_train),
-        'KNN': train_knn_regressor(X_train, y_train),
-        'Polynomial': train_polynomial_regression(X_train, y_train)
+        "GAM": train_gam(X_train, y_train),
+        "SVR": train_svr(X_train, y_train),
+        "KNN": train_knn_regressor(X_train, y_train),
+        "Polynomial": train_polynomial_regression(X_train, y_train),
     }

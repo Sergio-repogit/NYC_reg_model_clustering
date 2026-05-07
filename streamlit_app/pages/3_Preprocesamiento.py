@@ -44,7 +44,10 @@ with col_biplot:
     st.subheader("PCA Biplot")
     BIPLOT_PATH = Path("results/figures/preprocessing/pca_biplot.png")
     if BIPLOT_PATH.exists():
-        st.image(str(BIPLOT_PATH), caption="Relación entre variables originales y componentes principales.")
+        st.image(
+            str(BIPLOT_PATH),
+            caption="Relación entre variables originales y componentes principales.",
+        )
     else:
         st.warning("Biplot no encontrado.")
 
@@ -52,7 +55,9 @@ with col_scree:
     st.subheader("PCA Scree Plot")
     SCREE_PATH = Path("results/figures/preprocessing/pca_variance_scree.png")
     if SCREE_PATH.exists():
-        st.image(str(SCREE_PATH), caption="Varianza individual y acumulada por componente.")
+        st.image(
+            str(SCREE_PATH), caption="Varianza individual y acumulada por componente."
+        )
     else:
         st.warning("Scree Plot no encontrado.")
 
@@ -63,7 +68,11 @@ st.header("2. Pesos de las Variables (PCA Loadings)")
 LOADINGS_PATH = Path("results/tables/pca/pca_loadings.csv")
 if LOADINGS_PATH.exists():
     df_loadings = pd.read_csv(LOADINGS_PATH, index_col=0)
-    st.markdown("Esta tabla muestra la contribución de cada variable original a los componentes principales.")
-    st.dataframe(df_loadings.style.background_gradient(cmap='coolwarm'), use_container_width=True)
+    st.markdown(
+        "Esta tabla muestra la contribución de cada variable original a los componentes principales."
+    )
+    st.dataframe(
+        df_loadings.style.background_gradient(cmap="coolwarm"), use_container_width=True
+    )
 else:
     st.warning("Tabla de pesos PCA no encontrada.")

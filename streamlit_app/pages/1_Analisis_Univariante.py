@@ -19,7 +19,9 @@ Se incluyen gráficos de sectores para variables categóricas e histogramas con 
 EDA_DIR = Path("results/figures/eda")
 
 if not EDA_DIR.exists():
-    st.error("No se encontraron los resultados del EDA en 'results/figures/eda/'. Ejecute el pipeline principal primero.")
+    st.error(
+        "No se encontraron los resultados del EDA en 'results/figures/eda/'. Ejecute el pipeline principal primero."
+    )
 else:
     # 1. Variables Categóricas (Pie Charts)
     st.header("1. Distribución de Variables Categóricas")
@@ -29,7 +31,7 @@ else:
             cols = st.columns(2)
             for j in range(2):
                 if i + j < len(cat_files):
-                    file = cat_files[i+j]
+                    file = cat_files[i + j]
                     with cols[j]:
                         st.image(str(file), use_container_width=True)
     else:
@@ -43,7 +45,7 @@ else:
             cols = st.columns(2)
             for j in range(2):
                 if i + j < len(num_files):
-                    file = num_files[i+j]
+                    file = num_files[i + j]
                     with cols[j]:
                         st.image(str(file), use_container_width=True)
     else:

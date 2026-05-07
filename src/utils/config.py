@@ -46,21 +46,34 @@ LOG_FORMAT = "%(message)s"
 LOG_FILE = ROOT_DIR / "logs" / "pipeline.log"
 
 # Columnas identificadas
-ID_COLS = ['id', 'name', 'host_id', 'host_name']
-CATEGORICAL_COLS = ['neighbourhood_group', 'neighbourhood', 'room_type']
+ID_COLS = ["id", "name", "host_id", "host_name"]
+CATEGORICAL_COLS = ["neighbourhood_group", "neighbourhood", "room_type"]
 NUMERIC_COLS = [
-    'latitude', 'longitude', 'minimum_nights', 'number_of_reviews',
-    'reviews_per_month', 'calculated_host_listings_count', 'availability_365'
+    "latitude",
+    "longitude",
+    "minimum_nights",
+    "number_of_reviews",
+    "reviews_per_month",
+    "calculated_host_listings_count",
+    "availability_365",
 ]
+
 
 def create_directories():
     """Crea la estructura completa de carpetas del proyecto."""
     dirs = [
-        DATA_RAW_DIR, DATA_PROCESSED_DIR, MODELS_DIR,
-        FIGURES_EDA_DIR, FIGURES_PREPROCESSING_DIR, FIGURES_CLUSTERING_DIR,
-        FIGURES_EVALUATION_DIR, FIGURES_MODELS_DIR,
-        TABLES_CLUSTERING_DIR, TABLES_MODELS_DIR, TABLES_PCA_DIR,
-        LOG_FILE.parent
+        DATA_RAW_DIR,
+        DATA_PROCESSED_DIR,
+        MODELS_DIR,
+        FIGURES_EDA_DIR,
+        FIGURES_PREPROCESSING_DIR,
+        FIGURES_CLUSTERING_DIR,
+        FIGURES_EVALUATION_DIR,
+        FIGURES_MODELS_DIR,
+        TABLES_CLUSTERING_DIR,
+        TABLES_MODELS_DIR,
+        TABLES_PCA_DIR,
+        LOG_FILE.parent,
     ]
     for d in dirs:
         d.mkdir(parents=True, exist_ok=True)

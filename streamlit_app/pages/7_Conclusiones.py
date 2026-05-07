@@ -14,24 +14,24 @@ r2_score = 0.0
 mae_score = 0.0
 gap = 0.0
 
-csv_path = root_dir / 'results' / 'tables' / 'models' / 'model_comparison_master.csv'
+csv_path = root_dir / "results" / "tables" / "models" / "model_comparison_master.csv"
 if csv_path.exists():
     df_res = pd.read_csv(csv_path)
-    stable_models = df_res[df_res['Overfitting Gap'] < 0.05]
+    stable_models = df_res[df_res["Overfitting Gap"] < 0.05]
     if stable_models.empty:
-        winner = df_res.sort_values('Hold-out R2', ascending=False).iloc[0]
+        winner = df_res.sort_values("Hold-out R2", ascending=False).iloc[0]
     else:
-        winner = stable_models.sort_values('Hold-out R2', ascending=False).iloc[0]
+        winner = stable_models.sort_values("Hold-out R2", ascending=False).iloc[0]
 
-    winner_name = winner['Modelo']
-    r2_score = winner['Hold-out R2']
-    mae_score = winner['MAE ($)']
-    gap = winner['Overfitting Gap']
+    winner_name = winner["Modelo"]
+    r2_score = winner["Hold-out R2"]
+    mae_score = winner["MAE ($)"]
+    gap = winner["Overfitting Gap"]
 
-clustered_data_path = root_dir / 'results' / 'tables' / 'final_processed_data.csv'
+clustered_data_path = root_dir / "results" / "tables" / "final_processed_data.csv"
 n_clusters = 0
 if clustered_data_path.exists():
-    n_clusters = pd.read_csv(clustered_data_path)['cluster'].nunique()
+    n_clusters = pd.read_csv(clustered_data_path)["cluster"].nunique()
 
 st.markdown(f"""
 ### 1. Resumen de resultados

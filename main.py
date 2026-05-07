@@ -34,6 +34,7 @@ from utils.helpers import print_section, setup_logging, timer  # noqa: E402
 
 logger = setup_logging(__name__)
 
+
 @timer
 def main():
     parser = argparse.ArgumentParser(description="Pipeline Maestro NYC Airbnb")
@@ -50,7 +51,9 @@ def main():
     # 1. Ingestión y EDA
     print_section("FASE 1: INGESTIÓN Y EDA")
     df_raw = load_raw_data()
-    plot_distributions(df_raw, ['price', 'availability_365'], "EDA Inicial", "eda_initial.png")
+    plot_distributions(
+        df_raw, ["price", "availability_365"], "EDA Inicial", "eda_initial.png"
+    )
     plot_correlation_matrix(df_raw)
     plot_numerical_eda(df_raw, NUMERIC_COLS)
     plot_categorical_eda(df_raw, CATEGORICAL_COLS)
@@ -61,32 +64,40 @@ def main():
 
     # 3. Clustering (Segmentación con Tabulación)
     print_section("FASE 3: CLUSTERING DE MERCADO")
-    X_clustering = df_pca.drop(columns=[c for c in df_pca.columns if 'price' in c])
+    X_clustering = df_pca.drop(columns=[c for c in df_pca.columns if "price" in c])
     df_metrics, consensus_k = validate_kmeans_strategy(X_clustering)
-    df_clustered, kmeans_model = train_final_kmeans(X_clustering, n_clusters=consensus_k)
+    df_clustered, kmeans_model = train_final_kmeans(
+        X_clustering, n_clusters=consensus_k
+    )
 
     # Save the final processed data with the cluster column and engineered features
     df_final_data = df_raw.copy()
-    for col in ['dist_times_square', 'dist_central_park', 'dist_grand_central', 'is_new_listing']:
-        if col in fe_info['df_fe'].columns:
-            df_final_data[col] = fe_info['df_fe'][col]
+    for col in [
+        "dist_times_square",
+        "dist_central_park",
+        "dist_grand_central",
+        "is_new_listing",
+    ]:
+        if col in fe_info["df_fe"].columns:
+            df_final_data[col] = fe_info["df_fe"][col]
 
-    df_final_data['cluster'] = df_clustered['cluster']
+    df_final_data["cluster"] = df_clustered["cluster"]
 
-    final_csv_path = root / 'results' / 'tables' / 'final_processed_data.csv'
+    final_csv_path = root / "results" / "tables" / "final_processed_data.csv"
     df_final_data.to_csv(final_csv_path, index=False)
 
     # 4. Modelado Predictivo (Auditoría Bias-Variance)
     print_section("FASE 4: MODELADO PREDICTIVO Y AUDITORÍA")
-    X_train = df_pca.drop(columns=['price', 'price_log'])
-    y_train = df_pca['price_log']
+    X_train = df_pca.drop(columns=["price", "price_log"])
+    y_train = df_pca["price_log"]
 
     # Esta función ahora centraliza la generación de tablas y diagnósticos multimodelo
     best_model, winner_name = train_and_select_best_model(X_train, y_train)
 
-    joblib.dump(best_model, root / 'results' / 'models' / 'best_model.pkl')
+    joblib.dump(best_model, root / "results" / "models" / "best_model.pkl")
 
     print_section("PIPELINE FINALIZADO EXITOSAMENTE")
+
 
 if __name__ == "__main__":
     main()

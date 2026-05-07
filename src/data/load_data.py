@@ -29,6 +29,7 @@ logger = setup_logging(__name__)
 # CARGA DE DATOS
 # ============================================================================
 
+
 @timer
 def load_raw_data(filepath: Path = DATA_RAW_PATH) -> pd.DataFrame:
     """
@@ -61,8 +62,7 @@ def load_raw_data(filepath: Path = DATA_RAW_PATH) -> pd.DataFrame:
 
 @timer
 def load_processed_data(
-    split: str = 'train',
-    directory: Path = DATA_PROCESSED_DIR
+    split: str = "train", directory: Path = DATA_PROCESSED_DIR
 ) -> pd.DataFrame:
     """
     Carga datos procesados (train/validation/test).
@@ -77,7 +77,7 @@ def load_processed_data(
     Example:
         >>> X_train = load_processed_data('train')
     """
-    filepath = directory / f'{split}.csv'
+    filepath = directory / f"{split}.csv"
 
     if not filepath.exists():
         logger.error(f"Archivo no encontrado: {filepath}")
@@ -96,6 +96,7 @@ def load_processed_data(
 # ============================================================================
 # VALIDACIÓN DE DATOS
 # ============================================================================
+
 
 def validate_columns(df: pd.DataFrame, required_cols: list) -> bool:
     """
@@ -156,6 +157,7 @@ def validate_data_types(df: pd.DataFrame, expected_dtypes: dict) -> bool:
 # INSPECCIÓN DE DATOS
 # ============================================================================
 
+
 def get_data_summary(df: pd.DataFrame) -> dict:
     """
     Obtiene un resumen estadístico del dataset.
@@ -170,18 +172,18 @@ def get_data_summary(df: pd.DataFrame) -> dict:
         >>> summary = get_data_summary(df)
     """
     numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
-    categorical_cols = df.select_dtypes(include=['object', 'category']).columns.tolist()
+    categorical_cols = df.select_dtypes(include=["object", "category"]).columns.tolist()
 
     summary = {
-        'shape': df.shape,
-        'rows': df.shape[0],
-        'cols': df.shape[1],
-        'numeric_cols': numeric_cols,
-        'categorical_cols': categorical_cols,
-        'missing_values': int(df.isna().sum().sum()),
-        'duplicates': int(df.duplicated().sum()),
-        'memory_usage_mb': round(df.memory_usage(deep=True).sum() / 1024**2, 2),
-        'dtypes': df.dtypes.to_dict()
+        "shape": df.shape,
+        "rows": df.shape[0],
+        "cols": df.shape[1],
+        "numeric_cols": numeric_cols,
+        "categorical_cols": categorical_cols,
+        "missing_values": int(df.isna().sum().sum()),
+        "duplicates": int(df.duplicated().sum()),
+        "memory_usage_mb": round(df.memory_usage(deep=True).sum() / 1024**2, 2),
+        "dtypes": df.dtypes.to_dict(),
     }
 
     return summary
@@ -216,14 +218,14 @@ def describe_categorical(df: pd.DataFrame) -> dict:
     Example:
         >>> cat_info = describe_categorical(df)
     """
-    categorical_cols = df.select_dtypes(include=['object', 'category']).columns
+    categorical_cols = df.select_dtypes(include=["object", "category"]).columns
 
     cat_info = {}
     for col in categorical_cols:
         cat_info[col] = {
-            'unique_values': df[col].nunique(),
-            'most_common': df[col].value_counts().index[0],
-            'missing_values': int(df[col].isna().sum())
+            "unique_values": df[col].nunique(),
+            "most_common": df[col].value_counts().index[0],
+            "missing_values": int(df[col].isna().sum()),
         }
 
     return cat_info
@@ -233,13 +235,14 @@ def describe_categorical(df: pd.DataFrame) -> dict:
 # PARTICIÓN DE DATOS
 # ============================================================================
 
+
 @timer
 def split_data(
     df: pd.DataFrame,
     test_size: float = 0.2,
     val_size: float = 0.25,
     random_state: int = 42,
-    stratify_col: str | None = None
+    stratify_col: str | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
     Divide el dataset en train/validation/test.
@@ -259,32 +262,34 @@ def split_data(
     """
     from sklearn.model_selection import train_test_split
 
-    logger.info(f"Dividiendo dataset: test={test_size*100:.0f}%, val={val_size*80:.0f}%, train={100-test_size*100-val_size*80:.0f}%")
+    logger.info(
+        f"Dividiendo dataset: test={test_size * 100:.0f}%, val={val_size * 80:.0f}%, train={100 - test_size * 100 - val_size * 80:.0f}%"
+    )
 
     # Primera división: train+val vs test
     stratify = df[stratify_col] if stratify_col else None
 
     train_val, test = train_test_split(
-        df,
-        test_size=test_size,
-        random_state=random_state,
-        stratify=stratify
+        df, test_size=test_size, random_state=random_state, stratify=stratify
     )
 
     # Segunda división: train vs val
     stratify = train_val[stratify_col] if stratify_col else None
 
     train, val = train_test_split(
-        train_val,
-        test_size=val_size,
-        random_state=random_state,
-        stratify=stratify
+        train_val, test_size=val_size, random_state=random_state, stratify=stratify
     )
 
     logger.info(" Dataset dividido:")
-    logger.info(f"   Train: {train.shape[0]:,} filas ({train.shape[0]/len(df)*100:.1f}%)")
-    logger.info(f"   Val:   {val.shape[0]:,} filas ({val.shape[0]/len(df)*100:.1f}%)")
-    logger.info(f"   Test:  {test.shape[0]:,} filas ({test.shape[0]/len(df)*100:.1f}%)")
+    logger.info(
+        f"   Train: {train.shape[0]:,} filas ({train.shape[0] / len(df) * 100:.1f}%)"
+    )
+    logger.info(
+        f"   Val:   {val.shape[0]:,} filas ({val.shape[0] / len(df) * 100:.1f}%)"
+    )
+    logger.info(
+        f"   Test:  {test.shape[0]:,} filas ({test.shape[0] / len(df) * 100:.1f}%)"
+    )
 
     return train, val, test
 
@@ -293,12 +298,13 @@ def split_data(
 # GUARDADO DE DATOS
 # ============================================================================
 
+
 @timer
 def save_processed_data(
     train: pd.DataFrame,
     val: pd.DataFrame,
     test: pd.DataFrame,
-    directory: Path = DATA_PROCESSED_DIR
+    directory: Path = DATA_PROCESSED_DIR,
 ) -> None:
     """
     Guarda los conjuntos de train/val/test procesados.
@@ -316,9 +322,9 @@ def save_processed_data(
     directory.mkdir(parents=True, exist_ok=True)
 
     try:
-        train.to_csv(directory / 'train.csv', index=False)
-        val.to_csv(directory / 'validation.csv', index=False)
-        test.to_csv(directory / 'test.csv', index=False)
+        train.to_csv(directory / "train.csv", index=False)
+        val.to_csv(directory / "validation.csv", index=False)
+        test.to_csv(directory / "test.csv", index=False)
 
         logger.info(f" Datos procesados guardados en: {directory}")
 
@@ -330,6 +336,7 @@ def save_processed_data(
 # ============================================================================
 # PIPELINE DE CARGA
 # ============================================================================
+
 
 @timer
 def load_and_validate() -> pd.DataFrame:
@@ -358,5 +365,5 @@ def load_and_validate() -> pd.DataFrame:
     return df
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     df = load_and_validate()

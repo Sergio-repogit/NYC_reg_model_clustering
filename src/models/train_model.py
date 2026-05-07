@@ -11,6 +11,7 @@ from utils.helpers import setup_logging, timer
 
 logger = setup_logging(__name__)
 
+
 @timer
 def train_model(df):
     """
@@ -19,7 +20,7 @@ def train_model(df):
     logger.info(" Iniciando entrenamiento del modelo...")
 
     # Solo conservar columnas numéricas para el modelo
-    X = df.select_dtypes(include=['number'])
+    X = df.select_dtypes(include=["number"])
 
     # Asegurar que el target esté separado
     if TARGET_COL in X.columns:

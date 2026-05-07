@@ -16,11 +16,12 @@ import streamlit as st
 st.set_page_config(
     page_title="Airbnb NYC 2019 - Data Mining Suite",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="collapsed",
 )
 
 # Estilos CSS Profesionales
-st.markdown("""
+st.markdown(
+    """
 <style>
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
@@ -31,7 +32,10 @@ st.markdown("""
     h1, h2, h3 { color: #1e293b; font-family: 'Inter', sans-serif; }
     .data-dict { font-size: 14px; background-color: #f1f5f9; padding: 20px; border-radius: 8px; border-left: 5px solid #3b82f6; }
 </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
+
 
 # ============================================================================
 # CARGA DE DATOS
@@ -42,9 +46,10 @@ def load_global_data():
     if not path.exists():
         return None
     df = pd.read_csv(path)
-    df.dropna(subset=['price', 'latitude', 'longitude'], inplace=True)
-    df = df[df['price'] > 0]
+    df.dropna(subset=["price", "latitude", "longitude"], inplace=True)
+    df = df[df["price"] > 0]
     return df
+
 
 # ============================================================================
 # CUERPO DE LA APP
@@ -79,7 +84,8 @@ def main():
 
         # 3. Diccionario de Variables
         st.markdown("### Diccionario de Variables")
-        st.markdown("""
+        st.markdown(
+            """
         <div class="data-dict">
         <ul>
             <li><b>id / name</b>: Identificador único y descripción del anuncio.</li>
@@ -97,21 +103,25 @@ def main():
             <li><b>availability_365</b>: Disponibilidad al año.</li>
         </ul>
         </div>
-        """, unsafe_allow_html=True)
+        """,
+            unsafe_allow_html=True,
+        )
 
         # 4. Sección de Visualización Global
         st.header("Visualización Espacial Global")
 
         # Colores consistentes
         color_map = {
-            'Entire home/apt': [0, 128, 255, 180],
-            'Private room': [0, 255, 128, 180],
-            'Shared room': [255, 0, 128, 180],
+            "Entire home/apt": [0, 128, 255, 180],
+            "Private room": [0, 255, 128, 180],
+            "Shared room": [255, 0, 128, 180],
         }
 
         # Aplicar color y asegurar que es una lista
-        df['color'] = df['room_type'].map(color_map)
-        df['color'] = df['color'].apply(lambda x: x if isinstance(x, list) else [128, 128, 128, 180])
+        df["color"] = df["room_type"].map(color_map)
+        df["color"] = df["color"].apply(
+            lambda x: x if isinstance(x, list) else [128, 128, 128, 180]
+        )
 
         # Configuración de Capa 3D
         layer = pdk.Layer(
@@ -127,26 +137,29 @@ def main():
         )
 
         view_state = pdk.ViewState(
-            latitude=df['latitude'].mean(),
-            longitude=df['longitude'].mean(),
+            latitude=df["latitude"].mean(),
+            longitude=df["longitude"].mean(),
             zoom=10,
-            pitch=55 # Aumento del ángulo para mejor efecto 3D
+            pitch=55,  # Aumento del ángulo para mejor efecto 3D
         )
 
         # Usar el estilo OSCURO integrado de PyDeck
         r = pdk.Deck(
             layers=[layer],
             initial_view_state=view_state,
-            map_style="dark", # Cambiado de 'light' a 'dark' por si ell usuario quier cambiarlo
+            map_style="dark",  # Cambiado de 'light' a 'dark' por si ell usuario quier cambiarlo
             tooltip={
                 "html": "<b>Alojamiento:</b> {name}<br><b>Tipo:</b> {room_type}<br><b>Precio:</b> ${price}",
-                "style": {"backgroundColor": "steelblue", "color": "white"}
-            }
+                "style": {"backgroundColor": "steelblue", "color": "white"},
+            },
         )
 
         st.pydeck_chart(r)
 
-        st.markdown("**Leyenda de Colores:** 🔵 Casa/Apto entero | 🟢 Habitación privada | 🔴 Habitación compartida")
+        st.markdown(
+            "**Leyenda de Colores:** 🔵 Casa/Apto entero | 🟢 Habitación privada | 🔴 Habitación compartida"
+        )
+
 
 if __name__ == "__main__":
     main()

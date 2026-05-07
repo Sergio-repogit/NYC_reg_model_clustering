@@ -6,7 +6,6 @@ Módulo optimizado para limpieza, imputación y codificación selectiva.
 Implementa Target Encoding para variables de alta cardinalidad.
 """
 
-
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler, TargetEncoder
@@ -20,34 +19,39 @@ logger = setup_logging(__name__)
 # TRATAMIENTO DE VALORES FALTANTES
 # ============================================================================
 
+
 @timer
 def handle_missing_values(
     df: pd.DataFrame,
-    strategy: str = 'mean',
+    strategy: str = "mean",
     numeric_cols: list | None = None,
-    categorical_cols: list | None = None
+    categorical_cols: list | None = None,
 ) -> pd.DataFrame:
     """Imputa valores faltantes en el DataFrame."""
     df = df.copy()
     if numeric_cols is None:
         numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
     if categorical_cols is None:
-        categorical_cols = df.select_dtypes(include=['object', 'category']).columns.tolist()
+        categorical_cols = df.select_dtypes(
+            include=["object", "category"]
+        ).columns.tolist()
 
-    if strategy == 'mean':
+    if strategy == "mean":
         df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].mean())
-    elif strategy == 'median':
+    elif strategy == "median":
         df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].median())
 
     for col in categorical_cols:
         if col in df.columns:
-            df[col] = df[col].fillna('Unknown')
+            df[col] = df[col].fillna("Unknown")
 
     return df
+
 
 # ============================================================================
 # TRANSFORMACIONES
 # ============================================================================
+
 
 @timer
 def apply_log_transform(df: pd.DataFrame, columns: list) -> pd.DataFrame:
@@ -55,19 +59,21 @@ def apply_log_transform(df: pd.DataFrame, columns: list) -> pd.DataFrame:
     df = df.copy()
     for col in columns:
         if col in df.columns:
-            df[f'{col}_log'] = np.log1p(df[col].clip(lower=0))
+            df[f"{col}_log"] = np.log1p(df[col].clip(lower=0))
     return df
+
 
 # ============================================================================
 # CODIFICACIÓN SELECTIVA (OHE + TARGET)
 # ============================================================================
 
+
 @timer
 def encode_categorical_hybrid(
     df: pd.DataFrame,
     y: pd.Series,
-    target_cols: list[str] = ['neighbourhood'],
-    ohe_cols: list[str] = ['neighbourhood_group', 'room_type']
+    target_cols: list[str] = ["neighbourhood"],
+    ohe_cols: list[str] = ["neighbourhood_group", "room_type"],
 ) -> pd.DataFrame:
     """
     Implementa una codificación híbrida:
@@ -92,18 +98,22 @@ def encode_categorical_hybrid(
 
     return df
 
+
 # ============================================================================
 # ESCALADO
 # ============================================================================
 
+
 @timer
-def scale_features(df: pd.DataFrame, numeric_cols: list | None = None) -> tuple[pd.DataFrame, StandardScaler]:
+def scale_features(
+    df: pd.DataFrame, numeric_cols: list | None = None
+) -> tuple[pd.DataFrame, StandardScaler]:
     """Escala variables numéricas usando StandardScaler."""
     df = df.copy()
     if numeric_cols is None:
         numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
         # Evitar escalar targets
-        numeric_cols = [c for c in numeric_cols if 'price' not in c]
+        numeric_cols = [c for c in numeric_cols if "price" not in c]
 
     scaler = StandardScaler()
     df[numeric_cols] = scaler.fit_transform(df[numeric_cols])

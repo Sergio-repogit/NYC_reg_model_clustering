@@ -18,21 +18,26 @@ MODELS_FIG_DIR = Path("results/figures/models")
 EVAL_FIG_DIR = Path("results/figures/evaluation")
 
 if not COMPARISON_PATH.exists():
-    st.error("No se encontró la tabla de comparación. Ejecute el entrenamiento primero.")
+    st.error(
+        "No se encontró la tabla de comparación. Ejecute el entrenamiento primero."
+    )
 else:
     # 1. Tabla de Rendimiento Dinámica
     st.header("1. Comparativa de Rendimiento")
     df_results = pd.read_csv(COMPARISON_PATH)
 
     # Estilizar la tabla: Resaltar mejores R2 (max) y menores errores (min)
-    styled_df = df_results.style.highlight_max(axis=0, subset=['CV Mean R2', 'Hold-out R2'], color='#00A699') \
-                               .highlight_min(axis=0, subset=['MAE ($)', 'RMSE ($)'], color='#FF5A5F')
+    styled_df = df_results.style.highlight_max(
+        axis=0, subset=["CV Mean R2", "Hold-out R2"], color="#00A699"
+    ).highlight_min(axis=0, subset=["MAE ($)", "RMSE ($)"], color="#FF5A5F")
 
     st.dataframe(styled_df, use_container_width=True)
 
     # 2. Diagnósticos Visuales por Modelo
     st.header("2. Diagnósticos e Importancia de Variables")
-    model_name = st.selectbox("Seleccione un modelo para ver detalles:", df_results['Modelo'].unique())
+    model_name = st.selectbox(
+        "Seleccione un modelo para ver detalles:", df_results["Modelo"].unique()
+    )
 
     col1, col2 = st.columns(2)
 
@@ -53,11 +58,13 @@ else:
         if imp_path.exists():
             st.image(str(imp_path), caption=f"Importancia de Variables: {model_name}")
         else:
-            st.info("Este modelo no soporta visualización de importancia de variables directa o lineal.")
+            st.info(
+                "Este modelo no soporta visualización de importancia de variables directa o lineal."
+            )
 
     # 3. Métricas en Test Set (Modelo Ganador)
     st.header("3. Evaluación del Modelo Ganador")
-    winner = df_results.sort_values('Hold-out R2', ascending=False).iloc[0]
+    winner = df_results.sort_values("Hold-out R2", ascending=False).iloc[0]
 
     st.success(f"El modelo seleccionado como ganador es: **{winner['Modelo']}**")
 
@@ -66,4 +73,6 @@ else:
     col_r2.metric("MAE ($) (Test)", f"${winner['MAE ($)']:.2f}")
     col_r3.metric("RMSE ($) (Test)", f"${winner['RMSE ($)']:.2f}")
 
-    st.info("Nota: Las métricas de error ($) representan la desviación media del modelo en dólares reales por noche.")
+    st.info(
+        "Nota: Las métricas de error ($) representan la desviación media del modelo en dólares reales por noche."
+    )

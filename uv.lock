@@ -13,7 +13,7 @@ resolution-markers = [
 
 [[package]]
 name = "airbnb-analysis"
-version = "0.0.3"
+version = "0.0.9"
 source = { editable = "." }
 dependencies = [
     { name = "folium" },
