@@ -2,7 +2,6 @@
 
 > Proyecto final — Minería de Datos · Grado en Matemáticas · UNIE Universidad
 
-[![Coverage](https://img.shields.io/badge/coverage-85%25-brightgreen)](#)
 ![Python](https://img.shields.io/badge/python-3.13-blue)
 ![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)
 [![CI](https://github.com/Sergio-repogit/NYC_reg_model_clustering/actions/workflows/ci.yml/badge.svg)](https://github.com/Sergio-repogit/NYC_reg_model_clustering/actions/workflows/ci.yml)
