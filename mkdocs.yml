@@ -29,8 +29,8 @@ theme:
     - content.code.copy
 
 nav:
-  - Inicio: index.md
-  - Análisis Estacional: analisis.md
+
+  - Análisis Estacional: RESULTADOS.md
 
 markdown_extensions:
   - pymdownx.highlight:
