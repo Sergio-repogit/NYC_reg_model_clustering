@@ -3,7 +3,7 @@ Script Maestro de Ejecución (main.py) - NYC Airbnb Data Mining
 ============================================================
 Orquestador del pipeline completo con generación masiva de tablas e imágenes.
 """
-
+# ruff: noqa: I001
 import matplotlib
 matplotlib.use('Agg')
 
