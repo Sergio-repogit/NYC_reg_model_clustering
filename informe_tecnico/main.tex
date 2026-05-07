@@ -18,7 +18,8 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{listings}
 \usepackage{natbib}
-
+\usepackage[T1]{fontenc}
+\usepackage{lmodern} % Usa la fuente Latin Modern, que es vectorial
 % Configuración de colores
 \definecolor{nycred}{RGB}{255,90,95} % Color brand Airbnb
 \definecolor{codegray}{rgb}{0.95,0.95,0.95}
@@ -55,7 +56,6 @@
 % Título y Autor
 \title{
     \vspace{-2cm}
-    \includegraphics[width=0.4\textwidth]{../../streamlit_app/assets/images/logo.png}\\[1cm]
     \Huge \textbf{Predicción y Segmentación Dinámica del Mercado Inmobiliario en NYC}\\[0.5cm]
     \Large Informe Técnico Completo del Proyecto de Machine Learning
 }
