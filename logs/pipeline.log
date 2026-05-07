@@ -257,3 +257,28 @@ ValueError: Must have at least 1 validation dataset for early stopping.
  -> train_final_kmeans finalizado (0.39s)
  -> train_and_select_best_model finalizado (566.38s)
  -> main finalizado (786.86s)
+ Dataset cargado: 48,895 filas, 16 columnas
+ -> load_raw_data finalizado (0.21s)
+ -> create_domain_features finalizado (0.01s)
+ Target Encoding aplicado a: ['neighbourhood']
+ One-Hot Encoding aplicado a: ['neighbourhood_group', 'room_type']
+ -> encode_categorical_hybrid finalizado (0.04s)
+ -> scale_features finalizado (0.03s)
+ -> apply_pca_with_report finalizado (0.43s)
+ -> complete_feature_engineering finalizado (0.57s)
+ -> validate_kmeans_strategy finalizado (215.35s)
+ -> train_final_kmeans finalizado (0.39s)
+ Dataset cargado: 48,895 filas, 16 columnas
+ -> load_raw_data finalizado (0.15s)
+ -> create_domain_features finalizado (0.01s)
+ -> handle_missing_values finalizado (0.01s)
+ Target Encoding aplicado a: ['neighbourhood']
+ One-Hot Encoding aplicado a: ['neighbourhood_group', 'room_type']
+ -> encode_categorical_hybrid finalizado (0.04s)
+ -> scale_features finalizado (0.04s)
+ -> apply_pca_with_report finalizado (0.29s)
+ -> complete_feature_engineering finalizado (0.44s)
+ -> validate_kmeans_strategy finalizado (260.84s)
+ -> train_final_kmeans finalizado (0.39s)
+ -> train_and_select_best_model finalizado (545.14s)
+ -> main finalizado (814.14s)
