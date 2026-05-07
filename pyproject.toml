@@ -1,9 +1,9 @@
 [project]
 name = "airbnb_analysis"
-version = "0.0.2"
+version = "0.0.3"
 description = "Pipeline for Airbnb data analysis, feature engineering, and PCA."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 authors = [{ name = "Sergio Minguez Cruces"}]
 
 dependencies = [
@@ -28,6 +28,7 @@ airbnb-pipeline = "main:main"
 
 [dependency-groups]
 dev = [
+    "mkdocs>=1.6.1",
     "pytest>=7.4",
     "pytest-cov>=4.1",
     "ruff>=0.1",
