@@ -4,10 +4,10 @@ Preprocesamiento y Feature Engineering - Airbnb NYC
 Documentación técnica de transformaciones y PCA.
 """
 
-import streamlit as st
-import pandas as pd
-import json
 from pathlib import Path
+
+import pandas as pd
+import streamlit as st
 
 st.set_page_config(page_title="Preprocesamiento", layout="wide")
 
@@ -22,13 +22,13 @@ Para el modelado de alta complejidad, se han implementado las siguientes técnic
    - Cálculo de days_since_review (días desde la última reseña) a partir de last_review.
    - Eliminación de variables no relevantes para el modelo (id, host_id, name, host_name,calculated_host_listings_count, last_review).
    - Imputación de valores faltantes: last_review imputado con la media y reviews_per_month imputado por 0 al considerarse nuevo, se consideran MAR (Missing at Random - Faltantes al Azar).
-2. **Codificación de Categóricas**: 
+2. **Codificación de Categóricas**:
    - **Target Encoding** para la variable `neighbourhood` (vecindario), permitiendo capturar el valor medio por zona sin aumentar drásticamente el número de columnas.
    - **One-Hot Encoding** para `neighbourhood_group` y `room_type`.
-3. **Escalado**: 
+3. **Escalado**:
    - Transformaciones logarítmicas en variables con alto sesgo.
    - Aplicación de `StandardScaler` para normalizar las magnitudes de las características.
-4. **Reducción de Dimensionalidad (PCA)**: 
+4. **Reducción de Dimensionalidad (PCA)**:
    - Se ha aplicado PCA para reducir el espacio de características manteniendo el **95% de la varianza explicada**.
 """)
 

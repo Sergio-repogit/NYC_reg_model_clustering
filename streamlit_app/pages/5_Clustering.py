@@ -4,10 +4,11 @@ Clustering y Segmentación de Mercado - Airbnb NYC
 Aprendizaje no supervisado mediante K-Means y validación de consenso.
 """
 
-import streamlit as st
+from pathlib import Path
+
 import pandas as pd
 import plotly.express as px
-from pathlib import Path
+import streamlit as st
 
 st.set_page_config(page_title="Clustering", layout="wide")
 
@@ -29,13 +30,16 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     elbow = FIGS_DIR / "elbow_method.png"
-    if elbow.exists(): st.image(str(elbow), caption="Método del Codo")
+    if elbow.exists():
+        st.image(str(elbow), caption="Método del Codo")
 with col2:
     sil = FIGS_DIR / "silhouette_analysis.png"
-    if sil.exists(): st.image(str(sil), caption="Análisis de Silueta")
+    if sil.exists():
+        st.image(str(sil), caption="Análisis de Silueta")
 with col3:
     gap = FIGS_DIR / "gap_statistic.png"
-    if gap.exists(): st.image(str(gap), caption="Gap Statistic")
+    if gap.exists():
+        st.image(str(gap), caption="Gap Statistic")
 
 # Carga de Datos y Control de Errores
 CLUSTERED_DATA = root_dir / "results" / "tables" / "final_processed_data.csv"
@@ -65,7 +69,7 @@ if metrics_path.exists():
         col_m1.metric("Silhouette Score", f"{row['Silhouette']:.4f}")
         col_m2.metric("Gap Statistic", f"{row['Gap']:.4f}")
         col_m3.metric("Inertia", f"{row['Inertia']:,.0f}")
-    
+
     with st.expander("Ver tabla completa de métricas de validación"):
         st.dataframe(df_metrics, use_container_width=True)
 
@@ -76,7 +80,7 @@ profile_data = []
 for cluster_id, group in df_clustered.groupby('cluster'):
     mode_rt = group['room_type'].mode().iloc[0] if 'room_type' in group.columns else "N/A"
     rt_pct = (group['room_type'] == mode_rt).mean() * 100 if 'room_type' in group.columns else 0
-    
+
     profile_data.append({
         'Cluster': cluster_id,
         'Most Frequent Room Type': mode_rt,

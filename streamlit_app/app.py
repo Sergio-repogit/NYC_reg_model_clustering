@@ -4,11 +4,11 @@ Streamlit App Principal - Airbnb NYC 2019 Data Mining
 Rediseño solicitado por el usuario con Mapa 3D Global en tema OSCURO.
 """
 
-import streamlit as st
-import pandas as pd
-import numpy as np
-import pydeck as pdk
 from pathlib import Path
+
+import pandas as pd
+import pydeck as pdk
+import streamlit as st
 
 # ============================================================================
 # CONFIGURACIÓN DE PÁGINA
@@ -25,7 +25,7 @@ st.markdown("""
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
-    
+
     .main { background-color: #f5f7f9; }
     .stMetric { background-color: #ffffff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
     h1, h2, h3 { color: #1e293b; font-family: 'Inter', sans-serif; }
@@ -39,7 +39,8 @@ st.markdown("""
 @st.cache_data
 def load_global_data():
     path = Path("data/raw/AB_NYC_2019.csv")
-    if not path.exists(): return None
+    if not path.exists():
+        return None
     df = pd.read_csv(path)
     df.dropna(subset=['price', 'latitude', 'longitude'], inplace=True)
     df = df[df['price'] > 0]
@@ -50,7 +51,7 @@ def load_global_data():
 # ============================================================================
 def main():
     st.title("Airbnb NYC 2019: Data Mining Pipeline")
-    
+
     # 1. Objetivos del Análisis
     st.header("Objetivos del Análisis")
     col1, col2 = st.columns(2)
@@ -70,12 +71,12 @@ def main():
         # 2. Información del Dataset
         st.header("Información del Dataset")
         tab1, tab2 = st.tabs(["Muestra de Datos", "Estadísticas Descriptivas"])
-        
+
         with tab1:
             st.dataframe(df.head(100), use_container_width=True)
         with tab2:
             st.dataframe(df.describe(), use_container_width=True)
-            
+
         # 3. Diccionario de Variables
         st.markdown("### Diccionario de Variables")
         st.markdown("""
@@ -97,21 +98,21 @@ def main():
         </ul>
         </div>
         """, unsafe_allow_html=True)
-        
+
         # 4. Sección de Visualización Global
         st.header("Visualización Espacial Global")
-        
+
         # Colores consistentes
         color_map = {
             'Entire home/apt': [0, 128, 255, 180],
             'Private room': [0, 255, 128, 180],
             'Shared room': [255, 0, 128, 180],
         }
-        
+
         # Aplicar color y asegurar que es una lista
         df['color'] = df['room_type'].map(color_map)
         df['color'] = df['color'].apply(lambda x: x if isinstance(x, list) else [128, 128, 128, 180])
-        
+
         # Configuración de Capa 3D
         layer = pdk.Layer(
             "ColumnLayer",
@@ -124,14 +125,14 @@ def main():
             pickable=True,
             auto_highlight=True,
         )
-        
+
         view_state = pdk.ViewState(
             latitude=df['latitude'].mean(),
             longitude=df['longitude'].mean(),
             zoom=10,
             pitch=55 # Aumento del ángulo para mejor efecto 3D
         )
-        
+
         # Usar el estilo OSCURO integrado de PyDeck
         r = pdk.Deck(
             layers=[layer],
@@ -142,9 +143,9 @@ def main():
                 "style": {"backgroundColor": "steelblue", "color": "white"}
             }
         )
-        
+
         st.pydeck_chart(r)
-        
+
         st.markdown("**Leyenda de Colores:** 🔵 Casa/Apto entero | 🟢 Habitación privada | 🔴 Habitación compartida")
 
 if __name__ == "__main__":

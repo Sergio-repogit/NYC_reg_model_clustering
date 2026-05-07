@@ -6,20 +6,17 @@ Módulo optimizado para una salida por terminal limpia y profesional.
 Gestiona el logging, timing y formateo de reportes.
 """
 
-import os
+import logging
 import sys
 import time
-import logging
-import joblib
-import pickle
 from functools import wraps
 from pathlib import Path
-from datetime import datetime
-from typing import Any, Callable, Optional
+from typing import Any, Callable
 
-import numpy as np
+import joblib
 import pandas as pd
-from utils.config import LOG_LEVEL, LOG_FORMAT, LOG_FILE
+
+from utils.config import LOG_FILE, LOG_FORMAT, LOG_LEVEL
 
 # ============================================================================
 # CONFIGURACIÓN DE LOGGING (SALIDA LIMPIA)
@@ -29,21 +26,21 @@ def setup_logging(name: str = __name__, level: str = LOG_LEVEL) -> logging.Logge
     """Configura el logging con una salida por consola minimalista."""
     logger = logging.getLogger(name)
     logger.setLevel(getattr(logging, level))
-    
+
     if not logger.handlers:
         file_formatter = logging.Formatter(LOG_FORMAT)
         console_formatter = logging.Formatter('%(message)s')
-        
+
         console_handler = logging.StreamHandler(sys.stdout)
         console_handler.setFormatter(console_formatter)
         logger.addHandler(console_handler)
-        
+
         if LOG_FILE:
             LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
             file_handler = logging.FileHandler(LOG_FILE)
             file_handler.setFormatter(file_formatter)
             logger.addHandler(file_handler)
-    
+
     return logger
 
 logger = setup_logging(__name__)
@@ -67,7 +64,7 @@ def timer(func: Callable) -> Callable:
         except Exception as e:
             logger.error(f" [ERROR] {func.__name__} falló: {str(e)}")
             raise
-    
+
     return wrapper
 
 def print_section(title: str) -> None:
@@ -112,9 +109,14 @@ def load_model(filepath: Path) -> Any:
 def create_directories() -> None:
     """Crea la estructura de directorios del proyecto."""
     from utils.config import (
-        DATA_RAW_DIR, DATA_PROCESSED_DIR, MODELS_DIR, 
-        FIGURES_EDA_DIR, FIGURES_CLUSTERING_DIR, FIGURES_EVALUATION_DIR
+        DATA_PROCESSED_DIR,
+        DATA_RAW_DIR,
+        FIGURES_CLUSTERING_DIR,
+        FIGURES_EDA_DIR,
+        FIGURES_EVALUATION_DIR,
+        MODELS_DIR,
     )
-    dirs = [DATA_RAW_DIR, DATA_PROCESSED_DIR, MODELS_DIR, 
+    dirs = [DATA_RAW_DIR, DATA_PROCESSED_DIR, MODELS_DIR,
             FIGURES_EDA_DIR, FIGURES_CLUSTERING_DIR, FIGURES_EVALUATION_DIR]
-    for d in dirs: d.mkdir(parents=True, exist_ok=True)
+    for d in dirs:
+        d.mkdir(parents=True, exist_ok=True)

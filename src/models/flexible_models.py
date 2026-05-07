@@ -6,19 +6,15 @@ Módulo con modelos no paramétricos y de alta flexibilidad: Splines, GAM, SVM y
 Optimizado exclusivamente para tareas de regresión de precios.
 """
 
+
 import pandas as pd
-import numpy as np
-from typing import Dict, Tuple, Optional
-
-from sklearn.svm import SVR
-from sklearn.neighbors import KNeighborsRegressor
-from sklearn.model_selection import GridSearchCV
-from sklearn.preprocessing import StandardScaler, PolynomialFeatures
-from sklearn.pipeline import Pipeline
-from sklearn.linear_model import LinearRegression
 from pygam import LinearGAM, s
+from sklearn.linear_model import LinearRegression
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import PolynomialFeatures, StandardScaler
+from sklearn.svm import SVR
 
-from utils.config import RANDOM_STATE, CV_FOLDS
 from utils.helpers import setup_logging, timer
 
 logger = setup_logging(__name__)
@@ -36,10 +32,10 @@ def train_gam(X_train: pd.DataFrame, y_train: pd.Series, n_splines: int = 25):
     terms = s(0, n_splines=n_splines)
     for i in range(1, X_train.shape[1]):
         terms += s(i, n_splines=n_splines)
-        
+
     model = LinearGAM(terms)
     model.fit(X_train, y_train)
-    
+
     logger.info(f" GAM (Splines) entrenado. Pseudo-R2: {model.statistics_['pseudo_r2']['explained_deviance']:.4f}")
     return model
 
@@ -54,11 +50,11 @@ def train_svr(X_train, y_train, kernel='rbf', C=1.0, epsilon=0.1):
     """
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X_train)
-    
+
     model = SVR(kernel=kernel, C=C, epsilon=epsilon)
     model.fit(X_scaled, y_train)
     model.scaler = scaler
-    
+
     logger.info(f" SVR ({kernel}) entrenado. R2: {model.score(X_scaled, y_train):.4f}")
     return model
 
@@ -73,11 +69,11 @@ def train_knn_regressor(X_train, y_train, n_neighbors=5):
     """
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X_train)
-    
+
     model = KNeighborsRegressor(n_neighbors=n_neighbors, n_jobs=-1)
     model.fit(X_scaled, y_train)
     model.scaler = scaler
-    
+
     logger.info(f" KNN Regressor entrenado (k={n_neighbors})")
     return model
 
@@ -95,7 +91,7 @@ def train_polynomial_regression(X_train, y_train, degree=2):
         ('linear', LinearRegression())
     ])
     model.fit(X_train, y_train)
-    
+
     logger.info(f" Regresión Polinomial (grado={degree}) entrenada")
     return model
 
@@ -104,7 +100,7 @@ def train_polynomial_regression(X_train, y_train, degree=2):
 # ============================================================================
 
 @timer
-def train_all_flexible_models(X_train, y_train) -> Dict:
+def train_all_flexible_models(X_train, y_train) -> dict:
     """Entrena la suite completa de modelos flexibles."""
     return {
         'GAM': train_gam(X_train, y_train),

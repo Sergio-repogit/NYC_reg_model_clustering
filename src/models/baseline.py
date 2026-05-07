@@ -2,22 +2,24 @@
 Modelos Baseline - Airbnb NYC Data Mining
 ==========================================
 
-Módulo con modelos lineales y no lineales simples adaptados para la 
+Módulo con modelos lineales y no lineales simples adaptados para la
 estrategia de regresión basada en componentes principales (PCA).
 """
 
-import pandas as pd
-import numpy as np
-from typing import Dict, Tuple, Optional
 
-from sklearn.linear_model import LinearRegression, Ridge, Lasso
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.model_selection import GridSearchCV
+import numpy as np
+import pandas as pd
 import statsmodels.api as sm
+from sklearn.linear_model import Lasso, LinearRegression, Ridge
+from sklearn.model_selection import GridSearchCV
+from sklearn.tree import DecisionTreeRegressor
 
 from utils.config import (
-    RANDOM_STATE, CV_FOLDS,
-    LINEAR_PARAMS, RIDGE_PARAMS, LASSO_PARAMS
+    CV_FOLDS,
+    LASSO_PARAMS,
+    LINEAR_PARAMS,
+    RANDOM_STATE,
+    RIDGE_PARAMS,
 )
 from utils.helpers import setup_logging, timer
 
@@ -38,10 +40,10 @@ def train_linear_regression(
     """
     model = LinearRegression(**LINEAR_PARAMS, **kwargs)
     model.fit(X_train, y_train)
-    
-    logger.info(f" Regresión Lineal entrenada")
+
+    logger.info(" Regresión Lineal entrenada")
     logger.info(f"   R2 train: {model.score(X_train, y_train):.4f}")
-    
+
     return model
 
 # ============================================================================
@@ -61,13 +63,13 @@ def train_ridge(
     params = RIDGE_PARAMS.copy()
     params['alpha'] = alpha
     params.update(kwargs)
-    
+
     model = Ridge(**params)
     model.fit(X_train, y_train)
-    
+
     logger.info(f" Ridge Regression entrenada (alpha={alpha})")
     logger.info(f"   R2 train: {model.score(X_train, y_train):.4f}")
-    
+
     return model
 
 @timer
@@ -83,15 +85,15 @@ def train_lasso(
     params = LASSO_PARAMS.copy()
     params['alpha'] = alpha
     params.update(kwargs)
-    
+
     model = Lasso(**params)
     model.fit(X_train, y_train)
-    
+
     n_features_selected = np.sum(model.coef_ != 0)
     logger.info(f" Lasso Regression entrenada (alpha={alpha})")
     logger.info(f"   Componentes activos: {n_features_selected}/{len(model.coef_)}")
     logger.info(f"   R2 train: {model.score(X_train, y_train):.4f}")
-    
+
     return model
 
 # ============================================================================
@@ -116,10 +118,10 @@ def train_decision_tree_regressor(
         **kwargs
     )
     model.fit(X_train, y_train)
-    
-    logger.info(f" Árbol de Decisión (Regresión) entrenado")
+
+    logger.info(" Árbol de Decisión (Regresión) entrenado")
     logger.info(f"   R2 train: {model.score(X_train, y_train):.4f}")
-    
+
     return model
 
 # ============================================================================
@@ -136,20 +138,20 @@ def train_glm(
     Entrena GLM (Generalized Linear Model) para análisis estadístico de componentes.
     """
     X_train_const = sm.add_constant(X_train)
-    
+
     if family == 'gaussian':
         fam = sm.families.Gaussian()
     elif family == 'poisson':
         fam = sm.families.Poisson()
     else:
         raise ValueError(f"Familia no compatible con regresión de precios: {family}")
-    
+
     model = sm.GLM(y_train, X_train_const, family=fam)
     result = model.fit()
-    
+
     logger.info(f" GLM entrenado (familia={family})")
     logger.info(f"   Log-Likelihood: {result.llf:.2f}")
-    
+
     return result
 
 # ============================================================================
@@ -177,14 +179,14 @@ def optimize_baseline_hyperparameters(
         param_grid = {'max_depth': [3, 5, 7, 10], 'min_samples_split': [2, 5, 10]}
     else:
         raise ValueError(f"Tipo de modelo no soportado: {model_type}")
-    
+
     grid_search = GridSearchCV(
-        model, param_grid, cv=cv, 
-        scoring='neg_mean_squared_error', 
+        model, param_grid, cv=cv,
+        scoring='neg_mean_squared_error',
         n_jobs=-1
     )
     grid_search.fit(X_train, y_train)
-    
+
     logger.info(f" Optimización {model_type} finalizada. Mejores parámetros: {grid_search.best_params_}")
     return grid_search.best_estimator_
 
@@ -196,19 +198,19 @@ def optimize_baseline_hyperparameters(
 def train_all_baselines(
     X_train: pd.DataFrame,
     y_train: pd.Series
-) -> Dict:
+) -> dict:
     """
     Entrena la suite completa de modelos baseline de regresión.
     """
     logger.info(" Entrenando suite de regresión baseline sobre componentes PCA...")
-    
+
     baselines = {
         'Linear Regression': train_linear_regression(X_train, y_train),
         'Ridge': train_ridge(X_train, y_train),
         'Lasso': train_lasso(X_train, y_train),
         'Decision Tree': train_decision_tree_regressor(X_train, y_train)
     }
-    
+
     return baselines
 
 def get_baseline_feature_importance(
@@ -230,5 +232,5 @@ def get_baseline_feature_importance(
         })
     else:
         return pd.DataFrame()
-        
+
     return importance.sort_values('importance', ascending=False)

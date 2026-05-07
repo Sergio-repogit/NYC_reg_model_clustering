@@ -6,24 +6,37 @@ Módulo para entrenamiento de modelos avanzados con validación cruzada,
 ajuste de hiperparámetros y exportación de tablas comparativas.
 """
 
-import pandas as pd
-import numpy as np
-from typing import Dict, Tuple, Any, List
-from sklearn.ensemble import RandomForestRegressor, BaggingRegressor, AdaBoostRegressor, StackingRegressor
-from sklearn.linear_model import Ridge, Lasso, LinearRegression
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.svm import SVR, LinearSVR
-from sklearn.model_selection import cross_val_score, train_test_split, GridSearchCV, KFold
-from sklearn.metrics import mean_absolute_error, mean_squared_error
-from xgboost import XGBRegressor
 import time
+from typing import Any
 
-from utils.config import RANDOM_STATE, TABLES_MODELS_DIR, FIGURES_MODELS_DIR
-from utils.helpers import setup_logging, timer, print_custom_report
-from evaluation.visualization import (
-    plot_regression_diagnostics, plot_model_performance_comparison,
-    plot_feature_importance, plot_learning_curve_diagnostic
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import (
+    AdaBoostRegressor,
+    BaggingRegressor,
+    RandomForestRegressor,
+    StackingRegressor,
 )
+from sklearn.linear_model import Lasso, LinearRegression, Ridge
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+from sklearn.model_selection import (
+    GridSearchCV,
+    KFold,
+    cross_val_score,
+    train_test_split,
+)
+from sklearn.svm import SVR, LinearSVR
+from sklearn.tree import DecisionTreeRegressor
+from xgboost import XGBRegressor
+
+from evaluation.visualization import (
+    plot_feature_importance,
+    plot_learning_curve_diagnostic,
+    plot_model_performance_comparison,
+    plot_regression_diagnostics,
+)
+from utils.config import RANDOM_STATE, TABLES_MODELS_DIR
+from utils.helpers import setup_logging, timer
 
 logger = setup_logging(__name__)
 
@@ -32,16 +45,16 @@ logger = setup_logging(__name__)
 # ============================================================================
 
 @timer
-def train_and_select_best_model(X, y) -> Tuple[Any, str]:
+def train_and_select_best_model(X, y) -> tuple[Any, str]:
     """
     Entrena candidatos, ajusta hiperparámetros y selecciona basado en estabilidad.
     Prioriza modelos con Overfitting Gap < 0.05.
     """
     X_train, X_holdout, y_train, y_holdout = train_test_split(X, y, test_size=0.2, random_state=RANDOM_STATE)
-    
+
     # Definición de Candidatos y Espacio de Búsqueda Optimizado
     from sklearn.ensemble import VotingRegressor
-    
+
     candidates = {
         'LinearRegression': (LinearRegression(), {}),
         'Ridge': (Ridge(random_state=RANDOM_STATE), {'alpha': [0.1, 1.0, 10.0]}),
@@ -57,7 +70,7 @@ def train_and_select_best_model(X, y) -> Tuple[Any, str]:
         }),
         'LinearSVR': (LinearSVR(dual=False, loss='squared_epsilon_insensitive', random_state=RANDOM_STATE), {'C': [0.1, 1.0]}),
         'SVR_RBF': (SVR(kernel='rbf'), {'C': [1, 10], 'gamma': ['scale']}),
-        'Bagging_LSVR': (BaggingRegressor(estimator=LinearSVR(dual=False, loss='squared_epsilon_insensitive', random_state=RANDOM_STATE), 
+        'Bagging_LSVR': (BaggingRegressor(estimator=LinearSVR(dual=False, loss='squared_epsilon_insensitive', random_state=RANDOM_STATE),
                                                n_estimators=10, n_jobs=-1, random_state=RANDOM_STATE), {
             'n_estimators': [5, 10]
         }),
@@ -84,45 +97,45 @@ def train_and_select_best_model(X, y) -> Tuple[Any, str]:
 
     results = []
     best_models = {}
-    
+
     total_start = time.time()
     for name, (model, params) in candidates.items():
         start_m = time.time()
-        
+
         cv_fold = KFold(n_splits=3, shuffle=True, random_state=RANDOM_STATE)
-        
+
         # Ajuste de Hiperparámetros (Parallelized)
         grid = GridSearchCV(model, params, cv=cv_fold, scoring='r2', n_jobs=-1)
-        
+
         # Early Stopping Logic only for XGBoost during GridSearch
         if name == 'XGBoost':
             grid.fit(X_train, y_train, eval_set=[(X_holdout, y_holdout)], verbose=False)
         else:
             grid.fit(X_train, y_train)
-        
+
         m = grid.best_estimator_
-        
+
         # Ensure XGBoost does not attempt early stopping in cross_val_score
         if name == 'XGBoost':
             m.set_params(early_stopping_rounds=None)
-            
+
         best_models[name] = m
-        
+
         # Evaluación robusta (Sin Early Stopping para evitar ValueError en folds)
         cv_scores = cross_val_score(m, X_train, y_train, cv=cv_fold, scoring='r2', n_jobs=-1)
         cv_mean = np.mean(cv_scores)
         train_r2 = m.score(X_train, y_train)
         holdout_r2 = m.score(X_holdout, y_holdout)
         y_pred = m.predict(X_holdout)
-        mae = mean_absolute_error(y_holdout, y_pred)
-        rmse = np.sqrt(mean_squared_error(y_holdout, y_pred))
+        mean_absolute_error(y_holdout, y_pred)
+        np.sqrt(mean_squared_error(y_holdout, y_pred))
         y_holdout_usd = np.expm1(y_holdout)
         y_pred_usd = np.expm1(y_pred)
         mae_usd = mean_absolute_error(y_holdout_usd, y_pred_usd)
         rmse_usd = np.sqrt(mean_squared_error(y_holdout_usd, y_pred_usd))
-        
+
         duration = time.time() - start_m
-        
+
         # Ahora los resultados incluyen:
         results.append({
             'Modelo': name,
@@ -144,19 +157,19 @@ def train_and_select_best_model(X, y) -> Tuple[Any, str]:
 
     df_results = pd.DataFrame(results)
     df_results.to_csv(TABLES_MODELS_DIR / 'model_comparison_master.csv', index=False)
-    
+
     # Selección de Ganador (Mejor R2 en Hold-out con Gap < 0.05)
     stable_models = df_results[df_results['Overfitting Gap'] < 0.05]
     if stable_models.empty:
         winner_row = df_results.sort_values('Hold-out R2', ascending=False).iloc[0]
     else:
         winner_row = stable_models.sort_values('Hold-out R2', ascending=False).iloc[0]
-        
+
     winner_name = winner_row['Modelo']
     winner_model = best_models[winner_name]
-    
+
     # Reporte de Auditoría de Depuración
-    total_duration = (time.time() - total_start) / 60    
+    (time.time() - total_start) / 60
     plot_model_performance_comparison(df_results)
-    
+
     return winner_model, winner_name

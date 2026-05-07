@@ -4,14 +4,15 @@ Análisis Univariante - Airbnb NYC 2019
 Visualización de distribuciones univariantes generadas durante el EDA.
 """
 
-import streamlit as st
 from pathlib import Path
+
+import streamlit as st
 
 st.set_page_config(page_title="Análisis Univariante", layout="wide")
 
 st.title("Análisis Univariante")
 st.markdown("""
-En esta sección se presentan las distribuciones individuales de las variables clave del dataset. 
+En esta sección se presentan las distribuciones individuales de las variables clave del dataset.
 Se incluyen gráficos de sectores para variables categóricas e histogramas con diagramas de caja para las numéricas.
 """)
 

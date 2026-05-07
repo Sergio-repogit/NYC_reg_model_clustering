@@ -1,6 +1,7 @@
-import streamlit as st
-import pandas as pd
 from pathlib import Path
+
+import pandas as pd
+import streamlit as st
 
 st.set_page_config(page_title="Conclusiones", layout="wide")
 st.title("Conclusiones y Síntesis del Proyecto")
@@ -21,7 +22,7 @@ if csv_path.exists():
         winner = df_res.sort_values('Hold-out R2', ascending=False).iloc[0]
     else:
         winner = stable_models.sort_values('Hold-out R2', ascending=False).iloc[0]
-        
+
     winner_name = winner['Modelo']
     r2_score = winner['Hold-out R2']
     mae_score = winner['MAE ($)']
@@ -39,18 +40,18 @@ st.markdown(f"""
 2. **Inteligencia Espacial:** Se integraron exitosamente métricas geoespaciales avanzadas (distancias a Times Square, Central Park y Grand Central) en el pipeline de ingeniería de características.
 3. **Segmentación de Mercado:** Mediante aprendizaje no supervisado (K-Means), se segmentó el mercado en **{n_clusters}** clústeres distintos.
 
-### 2. Hallazgos Clave 
+### 2. Hallazgos Clave
 
-**Ingeniería de Variables (Feature Engineering):** 
+**Ingeniería de Variables (Feature Engineering):**
 - La incorporación de variables espaciales (`dist_times_square`, `dist_central_park`, `dist_grand_central`) demostró tener un impacto significativo en la capacidad predictiva del modelo.
 - Patrón claro de Manhattan > Brooklyn > Queens > Bronx > Staten Island.
 - El tipo de habitación es el factor diferenciador principal del precio.
 - Mayor disponibilidad → Precios menores.
 
-**Reducción de Dimensionalidad (PCA):** 
+**Reducción de Dimensionalidad (PCA):**
 - La aplicación de Análisis de Componentes Principales permitió reducir la complejidad del espacio de características manteniendo la varianza más significativa. Esto optimizó el tiempo de entrenamiento y mitigó la multicolinealidad inherente entre las variables espaciales y de disponibilidad.
 
-**Clustering no Jerárquico (k-means):** 
+**Clustering no Jerárquico (k-means):**
 El análisis no supervisado reveló **{n_clusters}** perfiles de mercado distintos.
 
 ### 3. Trabajo Futuro y Recomendaciones

@@ -4,10 +4,10 @@ Modelos Supervisados - Airbnb NYC 2019
 Comparativa dinámica y diagnósticos de rendimiento.
 """
 
-import streamlit as st
-import pandas as pd
-import numpy as np
 from pathlib import Path
+
+import pandas as pd
+import streamlit as st
 
 st.set_page_config(page_title="Modelos Supervisados", layout="wide")
 
@@ -23,25 +23,25 @@ else:
     # 1. Tabla de Rendimiento Dinámica
     st.header("1. Comparativa de Rendimiento")
     df_results = pd.read_csv(COMPARISON_PATH)
-    
+
     # Estilizar la tabla: Resaltar mejores R2 (max) y menores errores (min)
     styled_df = df_results.style.highlight_max(axis=0, subset=['CV Mean R2', 'Hold-out R2'], color='#00A699') \
                                .highlight_min(axis=0, subset=['MAE ($)', 'RMSE ($)'], color='#FF5A5F')
-    
+
     st.dataframe(styled_df, use_container_width=True)
 
     # 2. Diagnósticos Visuales por Modelo
     st.header("2. Diagnósticos e Importancia de Variables")
     model_name = st.selectbox("Seleccione un modelo para ver detalles:", df_results['Modelo'].unique())
-    
+
     col1, col2 = st.columns(2)
-    
+
     with col1:
         # Diagnósticos
         diag_path = MODELS_FIG_DIR / f"{model_name}_diagnostics.png"
         if diag_path.exists():
             st.image(str(diag_path), caption=f"Diagnósticos: {model_name}")
-        
+
         # Curvas de Aprendizaje
         lc_path = EVAL_FIG_DIR / f"{model_name}_learning_curve.png"
         if lc_path.exists():
@@ -58,9 +58,9 @@ else:
     # 3. Métricas en Test Set (Modelo Ganador)
     st.header("3. Evaluación del Modelo Ganador")
     winner = df_results.sort_values('Hold-out R2', ascending=False).iloc[0]
-    
+
     st.success(f"El modelo seleccionado como ganador es: **{winner['Modelo']}**")
-    
+
     col_r1, col_r2, col_r3 = st.columns(3)
     col_r1.metric("R² Score (Test)", f"{winner['Hold-out R2']:.4f}")
     col_r2.metric("MAE ($) (Test)", f"${winner['MAE ($)']:.2f}")
