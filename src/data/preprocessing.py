@@ -6,7 +6,6 @@ Módulo optimizado para limpieza, imputación y codificación selectiva.
 Implementa Target Encoding para variables de alta cardinalidad.
 """
 
-from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -25,8 +24,8 @@ logger = setup_logging(__name__)
 def handle_missing_values(
     df: pd.DataFrame,
     strategy: str = 'mean',
-    numeric_cols: Optional[list] = None,
-    categorical_cols: Optional[list] = None
+    numeric_cols: list | None = None,
+    categorical_cols: list | None = None
 ) -> pd.DataFrame:
     """Imputa valores faltantes en el DataFrame."""
     df = df.copy()
@@ -98,7 +97,7 @@ def encode_categorical_hybrid(
 # ============================================================================
 
 @timer
-def scale_features(df: pd.DataFrame, numeric_cols: Optional[list] = None) -> tuple[pd.DataFrame, StandardScaler]:
+def scale_features(df: pd.DataFrame, numeric_cols: list | None = None) -> tuple[pd.DataFrame, StandardScaler]:
     """Escala variables numéricas usando StandardScaler."""
     df = df.copy()
     if numeric_cols is None:

@@ -9,9 +9,10 @@ Gestiona el logging, timing y formateo de reportes.
 import logging
 import sys
 import time
+from collections.abc import Callable
 from functools import wraps
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 import joblib
 import pandas as pd

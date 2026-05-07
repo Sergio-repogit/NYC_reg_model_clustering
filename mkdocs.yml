@@ -30,7 +30,7 @@ theme:
 
 nav:
 
-  - Análisis Estacional: RESULTADOS.md
+  - Análisis Estacional: RESULTS.md
 
 markdown_extensions:
   - pymdownx.highlight:

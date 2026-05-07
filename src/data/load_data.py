@@ -9,7 +9,6 @@ Date: 2026
 """
 
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -240,7 +239,7 @@ def split_data(
     test_size: float = 0.2,
     val_size: float = 0.25,
     random_state: int = 42,
-    stratify_col: Optional[str] = None
+    stratify_col: str | None = None
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
     Divide el dataset en train/validation/test.
