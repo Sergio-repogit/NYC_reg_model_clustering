@@ -1,6 +1,6 @@
 [project]
 name = "airbnb_analysis"
-version = "0.0.3"
+version = "0.0.4"
 description = "Pipeline for Airbnb data analysis, feature engineering, and PCA."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -29,6 +29,7 @@ airbnb-pipeline = "main:main"
 [dependency-groups]
 dev = [
     "mkdocs>=1.6.1",
+    "mkdocs-material>=9.7.6",
     "pytest>=7.4",
     "pytest-cov>=4.1",
     "ruff>=0.1",
