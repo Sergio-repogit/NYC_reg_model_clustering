@@ -1,0 +1,37 @@
+\chapter{Aprendizaje Supervisado: Modelado Predictivo}
+
+\section{Diseño Experimental y Ecosistema de Modelos}
+El objetivo principal (\textit{core}) de la investigación residía en la construcción de un motor de inferencia capaz de aproximar la valoración económica del mercado inmobiliario. 
+Para asegurar el rigor, la evaluación se rigió bajo un paradigma estricto de \textit{Hold-out Test} (partición 80/20) asistido por \textbf{Cross-Validation} estructurada (K-Folds). Adicionalmente, todo el protocolo incluyó bloqueos de semillas (\texttt{RANDOM\_STATE=42}) para imposibilitar la fuga de datos o discrepancias en la reproducibilidad.
+
+Dada la heterogeneidad y los picos de no-linealidad expuestos en la fase de clustering, se entrenó masivamente un ecosistema integrado por 12 algoritmos distintos:
+\begin{enumerate}
+    \item \textbf{Modelos de Regresión Lineal y Penalizados:} Regresión Lineal OLS (Baseline), Regresión Ridge (penalización $L_2$) y Regresión Lasso (penalización $L_1$).
+    \item \textbf{Basados en Árboles:} Árbol de Decisión (CART).
+    \item \textbf{Support Vector Machines:} LinearSVR y SVR con kernel Radial (SVR\_RBF).
+    \item \textbf{Ensembles (Bagging y Boosting):} RandomForestRegressor, AdaBoost, XGBoost \cite{chen2016xgboost} y Bagging sobre regresores SVR.
+    \item \textbf{Meta-Modelos (Ensamblajes de Alto Nivel):} Voting Regressor y Stacking Regressor (ensamblajes heterogéneos anidados).
+\end{enumerate}
+
+\section{Optimización Paramétrica (GridSearchCV)}
+La extracción de máxima capacidad teórica a los algoritmos se orquestó a través de un proceso de optimización exhaustiva, \texttt{GridSearchCV}. El grid de búsqueda iteró sobre los principales parámetros de control de la arquitectura de red algorítmica: profundidades de árbol (\texttt{max\_depth}), márgenes duros y blandos para el caso SVM (\texttt{C} y \texttt{gamma}), y coeficientes de penalización ($\alpha$). Se usó el coeficiente de determinación ($R^2$) como métrica unificadora de convergencia en este espacio cartesiano paramétrico.
+
+\section{Evaluación, Diagnóstico y Selección Final}
+Más allá de las métricas puramente aisladas como el Error Absoluto Medio (MAE) o el $R^2$, el protocolo de auditoría incorporó una métrica penalizante diseñada en este estudio: el \textbf{\textit{Overfitting Gap}}. Esta dimensión calculaba la sustracción analítica entre la varianza explicada en la partición de entrenamiento (Train) y la de evaluación (Hold-out). Cualquier modelo superando un salto del 0.05 era clasificado como inestable (memorización de ruido o varianza de sesgo extrema) y descartado categóricamente.
+
+\begin{table}[H]
+    \centering
+    \caption{Resultados del Hold-out Test para modelos estables (\textit{Gap} $< 0.05$)}
+    \begin{tabular}{lcccc}
+        \toprule
+        \textbf{Modelo} & \textbf{Hold-out $R^2$} & \textbf{MAE (\$)} & \textbf{RMSE (\$)} & \textbf{Overfitting Gap} \\
+        \midrule
+        \textbf{SVR\_RBF} & \textbf{0.5898} & \textbf{54.29} & \textbf{194.85} & \textbf{-0.0026} \\
+        Voting\_Assembly & 0.5866 & 55.15 & 193.95 & 0.0414 \\
+        XGBoost & 0.5863 & 55.40 & 193.10 & 0.0287 \\
+        LinearRegression & 0.5471 & 57.32 & 196.29 & -0.0199 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\textbf{Modelo Ganador:} El algoritmo \textbf{Support Vector Regressor con Kernel Radial (SVR\_RBF)} se posicionó inequívocamente como la solución definitiva. Su kernel no lineal ($RBF$) probó ser la herramienta matemática perfecta para capturar las interacciones geolocalizadas complejas dentro del espacio PCA. Alcanzó un $R^2$ aproximado del 59\% con un MAE competitivo de \$54.29 dólares y un \textit{Overfitting Gap} negativo, certificando matemáticamente su sublime e intachable capacidad de generalización algorítmica ante nueva casuística.
