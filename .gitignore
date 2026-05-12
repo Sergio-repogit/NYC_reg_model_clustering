@@ -19,9 +19,9 @@ env/
 *.ipynb_checkpoints
 
 # Data files — never commit raw data
-data/*
+
 !data/.gitkeep
-*.csv
+
 *.parquet
 *.nc
 *.grib
