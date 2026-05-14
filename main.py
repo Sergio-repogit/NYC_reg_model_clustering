@@ -60,7 +60,7 @@ def main():
         df_raw, ["price", "availability_365"], "EDA Inicial", "eda_initial.png"
     )
     plot_correlation_matrix(df_raw)
-    plot_numerical_eda(df_raw, NUMERIC_COLS)
+    plot_numerical_eda(df_raw, NUMERIC_COLS + ["price"])
     plot_categorical_eda(df_raw, CATEGORICAL_COLS)
 
     # 2. Ingeniería de Variables y PCA
