@@ -1,6 +1,6 @@
 [project]
 name = "airbnb_analysis"
-version = "0.2.0"
+version = "0.2.1"
 description = "Pipeline for Airbnb data analysis, feature engineering, and PCA."
 readme = "README.md"
 requires-python = ">=3.10"
