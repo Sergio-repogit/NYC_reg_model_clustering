@@ -15,17 +15,19 @@ import streamlit as st
 # ============================================================================
 st.set_page_config(
     page_title="Airbnb NYC 2019 - Data Mining Suite",
+    page_icon="🏙️",
     layout="wide",
-    initial_sidebar_state="collapsed",
+    initial_sidebar_state="expanded",  # CORREGIDO: collapsed ocultaba el sidebar en producción
 )
 
 # Estilos CSS Profesionales
+# NOTA: Se eliminaron '#MainMenu {visibility: hidden;}' y 'header {visibility: hidden;}'
+# porque en Streamlit Cloud ocultan los controles de navegación nativos del sidebar.
 st.markdown(
     """
 <style>
-    #MainMenu {visibility: hidden;}
+    /* Solo ocultar el footer de Streamlit, nunca el header ni el MainMenu */
     footer {visibility: hidden;}
-    header {visibility: hidden;}
 
     .main { background-color: #f5f7f9; }
     .stMetric { background-color: #ffffff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }

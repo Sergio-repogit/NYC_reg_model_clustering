@@ -1,0 +1,26 @@
+[theme]
+# Colores principales (tema Airbnb)
+primaryColor = "#FF5A5F"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F7F7F7"
+textColor = "#484848"
+font = "sans serif"
+
+[client]
+showErrorDetails = true
+toolbarMode = "minimal"
+
+[logger]
+level = "info"
+
+[server]
+# Configuración del servidor
+maxUploadSize = 200
+enableXsrfProtection = true
+enableCORS = false
+headless = true
+# NOTA: 'port' y 'serverAddress = localhost' eliminados — incompatibles con Streamlit Cloud
+
+[browser]
+gatherUsageStats = false
+# NOTA: 'serverAddress = localhost' eliminado — el cloud gestiona el routing de red
