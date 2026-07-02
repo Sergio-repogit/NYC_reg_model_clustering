@@ -7,7 +7,7 @@
 [![CI](https://github.com/Sergio-repogit/NYC_reg_model_clustering/actions/workflows/ci.yml/badge.svg)](https://github.com/Sergio-repogit/NYC_reg_model_clustering/actions/workflows/ci.yml)
 [![Docs](https://github.com/Sergio-repogit/NYC_reg_model_clustering/actions/workflows/docs.yml/badge.svg)](https://sergio-repogit.github.io/NYC_reg_model_clustering/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://nycmaps.streamlit.app/))
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://nycmaps.streamlit.app/)
 ---
 
 ## Description
